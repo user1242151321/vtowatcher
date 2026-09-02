@@ -14,105 +14,28 @@
 <body>
   <div class="ambient ambient-one"></div>
   <div class="ambient ambient-two"></div>
-
   <header class="site-header" id="top">
     <div class="nav-wrap">
-      <a class="brand" href="#top" aria-label="VTO Watcher home">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 40 40" role="img"><path d="M8 7h8l4 15L24 7h8L23 33h-6L8 7Z" fill="currentColor"/></svg>
-        </span>
-        <span>VTO Watcher</span>
-      </a>
+      <a class="brand" href="#top" aria-label="VTO Watcher home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" role="img"><path d="M8 7h8l4 15L24 7h8L23 33h-6L8 7Z" fill="currentColor"/></svg></span><span>VTO Watcher</span></a>
       <button class="menu-button" id="menuButton" aria-label="Open navigation" aria-expanded="false">☰</button>
-      <nav class="nav-links" id="navLinks">
-        <a href="#features">Features</a><a href="#how">How it works</a><a href="#download">Download</a><a href="#changelog">Changelog</a><a href="#faq">FAQ</a>
-      </nav>
+      <nav class="nav-links" id="navLinks"><a href="#features">Features</a><a href="#how">How it works</a><a href="#download">Download</a><a href="#changelog">Changelog</a><a href="#faq">FAQ</a></nav>
       <a class="nav-cta" href="#download">Get VTO Watcher</a>
     </div>
   </header>
-
   <main>
     <section class="hero section-shell">
-      <div class="hero-copy reveal">
-        <div class="eyebrow"><span class="pulse-dot"></span> Licensed Chrome Extension</div>
-        <h1>Stay ready when <span>VTO</span> appears.</h1>
-        <p class="hero-text">VTO Watcher monitors the Amazon A to Z VTO page, alerts you when an eligible offer appears, and keeps your controls in one clean dashboard.</p>
-        <div class="hero-actions"><a class="button primary" id="heroDownload" href="#download">Download latest</a><a class="button ghost" href="#how">See how it works</a></div>
-        <div class="hero-meta"><div><strong id="heroVersion">v4.2.6</strong><span>Latest version</span></div><div><strong>5 sec</strong><span>Minimum refresh</span></div><div><strong>1 key</strong><span>License protected</span></div></div>
-      </div>
-
-      <div class="hero-visual reveal delay-1" aria-label="VTO Watcher dashboard preview">
-        <div class="browser-card">
-          <div class="browser-top"><span></span><span></span><span></span><div class="browser-url">atoz.amazon.work</div></div>
-          <div class="mock-page">
-            <div class="mock-heading">Voluntary Time Off (VTO)</div>
-            <div class="offer-card dim"><div><b>2:30pm – 6:30pm</b><small>4 hrs 0 mins</small></div><span class="status filled">VTO Filled</span></div>
-            <div class="offer-card active"><div><b>4:35pm – 6:30pm</b><small>1 hr 55 mins</small></div><span class="status available">Available</span></div>
-            <div class="watcher-panel">
-              <div class="watcher-head"><div><span class="mini-logo">V</span><b>VTO Watcher</b></div><span class="live-pill">LIVE</span></div>
-              <div class="watcher-status"><span></span> Eligible VTO detected</div>
-              <div class="stats-row"><div><small>Refresh</small><strong>5s</strong></div><div><small>Auto confirm</small><strong>Off</strong></div><div><small>Offers</small><strong>1</strong></div></div>
-              <div class="watcher-actions"><button>Scan now</button><button>Pause</button></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="hero-copy reveal"><div class="eyebrow"><span class="pulse-dot"></span> Licensed Chrome Extension</div><h1>Stay ready when <span>VTO</span> appears.</h1><p class="hero-text">VTO Watcher monitors the Amazon A to Z VTO page, alerts you when an eligible offer appears, and keeps your controls in one clean dashboard.</p><div class="hero-actions"><a class="button primary" id="heroDownload" href="#download">Download latest</a><a class="button ghost" href="#how">See how it works</a></div><div class="hero-meta"><div><strong id="heroVersion">v4.2.6</strong><span>Latest version</span></div><div><strong>5 sec</strong><span>Minimum refresh</span></div><div><strong>1 key</strong><span>License protected</span></div></div></div>
+      <div class="hero-visual reveal delay-1" aria-label="VTO Watcher dashboard preview"><div class="browser-card"><div class="browser-top"><span></span><span></span><span></span><div class="browser-url">atoz.amazon.work</div></div><div class="mock-page"><div class="mock-heading">Voluntary Time Off (VTO)</div><div class="offer-card dim"><div><b>2:30pm – 6:30pm</b><small>4 hrs 0 mins</small></div><span class="status filled">VTO Filled</span></div><div class="offer-card active"><div><b>4:35pm – 6:30pm</b><small>1 hr 55 mins</small></div><span class="status available">Available</span></div><div class="watcher-panel"><div class="watcher-head"><div><span class="mini-logo">V</span><b>VTO Watcher</b></div><span class="live-pill">LIVE</span></div><div class="watcher-status"><span></span> Eligible VTO detected</div><div class="stats-row"><div><small>Refresh</small><strong>5s</strong></div><div><small>Auto confirm</small><strong>Off</strong></div><div><small>Offers</small><strong>1</strong></div></div><div class="watcher-actions"><button>Scan now</button><button>Pause</button></div></div></div></div></div>
     </section>
-
     <section class="trust-strip section-shell reveal"><div><span>✓</span> Server-side licensing</div><div><span>✓</span> GitHub-hosted updates</div><div><span>✓</span> Local browser settings</div><div><span>✓</span> No Amazon password storage</div></section>
-
-    <section class="content-section section-shell" id="features">
-      <div class="section-heading reveal"><div class="eyebrow">Features</div><h2>Built around speed, visibility, and control.</h2><p>Everything important stays visible without turning the page into a mess.</p></div>
-      <div class="feature-grid">
-        <article class="feature-card reveal"><div class="feature-icon">◉</div><h3>Fast VTO monitoring</h3><p>Choose refresh intervals starting at 5 seconds and scan the visible VTO page for eligible offers.</p></article>
-        <article class="feature-card reveal delay-1"><div class="feature-icon">↗</div><h3>Instant alerts</h3><p>Desktop notifications, sound, tab flashing, and an update badge help keep important changes noticeable.</p></article>
-        <article class="feature-card reveal delay-2"><div class="feature-icon">⌁</div><h3>Offer filters</h3><p>Filter by minimum hours, start time, and longest-offer preference so the watcher focuses on what you want.</p></article>
-        <article class="feature-card reveal"><div class="feature-icon">▣</div><h3>Smart status detection</h3><p>Filled, expired, unavailable, and previously accepted offers are ignored to reduce false positives.</p></article>
-        <article class="feature-card reveal delay-1"><div class="feature-icon">◇</div><h3>License protected</h3><p>Activation, device limits, expiration, revocation, and version access are controlled by the license server.</p></article>
-        <article class="feature-card reveal delay-2"><div class="feature-icon">↓</div><h3>Simple GitHub updates</h3><p>When a newer build is available, the extension shows an update notice and downloads the ZIP from GitHub.</p></article>
-      </div>
-    </section>
-
-    <section class="split-section section-shell" id="how">
-      <div class="section-heading reveal"><div class="eyebrow">How it works</div><h2>Three steps from install to monitoring.</h2></div>
-      <div class="steps">
-        <article class="step reveal"><span class="step-number">01</span><div><h3>Install</h3><p>Download the latest VTO Watcher ZIP, extract it, and load the extension folder through Chrome Developer Mode.</p></div></article>
-        <article class="step reveal delay-1"><span class="step-number">02</span><div><h3>Activate</h3><p>Enter your VTO Watcher license key. The license server validates the key and registers the permitted device.</p></div></article>
-        <article class="step reveal delay-2"><span class="step-number">03</span><div><h3>Monitor</h3><p>Open Amazon A to Z, go to the VTO page, configure your filters, and arm the watcher when you are ready.</p></div></article>
-      </div>
-    </section>
-
-    <section class="download-section" id="download">
-      <div class="section-shell download-wrap">
-        <div class="download-copy reveal"><div class="eyebrow">Latest release</div><h2>Download VTO Watcher</h2><p id="releaseMessage">The current GitHub release is ready to download.</p><div class="version-line"><span class="release-badge" id="latestVersionBadge">v4.2.6</span><span id="releaseStatus">Checking GitHub release feed…</span></div><a class="button primary large" id="downloadButton" href="https://raw.githubusercontent.com/user1242151321/test/main/updates/VTO_Watcher_4.2.6.zip">↓ Download latest ZIP</a><p class="license-note">A valid VTO Watcher license is required to use the extension.</p></div>
-        <div class="install-card reveal delay-1"><h3>Quick install</h3><ol><li><span>1</span><div><b>Download & extract</b><small>Extract the ZIP to a permanent folder.</small></div></li><li><span>2</span><div><b>Open Chrome extensions</b><small>Go to <code>chrome://extensions</code>.</small></div></li><li><span>3</span><div><b>Enable Developer mode</b><small>Turn it on in the upper-right corner.</small></div></li><li><span>4</span><div><b>Load unpacked</b><small>Select the extracted <code>extension</code> folder.</small></div></li><li><span>5</span><div><b>Activate your license</b><small>Open VTO Watcher and enter your license key.</small></div></li></ol></div>
-      </div>
-    </section>
-
-    <section class="content-section section-shell" id="changelog">
-      <div class="section-heading reveal"><div class="eyebrow">Changelog</div><h2>Recent VTO Watcher updates.</h2></div>
-      <div class="timeline">
-        <article class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-top"><h3>Version 4.2.6</h3><span>Current</span></div><p>Refreshed the extension popup with the dark neon VTO Watcher interface and new green V branding.</p></div></article>
-        <article class="timeline-item reveal delay-1"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-top"><h3>Version 4.2.5</h3><span>GitHub updates</span></div><p>Moved extension update downloads from Cloudflare R2 to GitHub while keeping Cloudflare for license validation.</p></div></article>
-        <article class="timeline-item reveal delay-2"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-top"><h3>Version 4.2.1</h3><span>Detection fix</span></div><p>Improved VTO card detection so filled and previously accepted offers are not incorrectly reported as eligible.</p></div></article>
-      </div>
-    </section>
-
-    <section class="content-section section-shell" id="faq">
-      <div class="section-heading reveal"><div class="eyebrow">FAQ</div><h2>Common questions.</h2></div>
-      <div class="faq-list">
-        <details class="faq-item reveal"><summary>Do I need a license?</summary><p>Yes. VTO Watcher uses server-side license validation. A license can also have device, expiration, and version-access limits.</p></details>
-        <details class="faq-item reveal"><summary>Does VTO Watcher store my Amazon password?</summary><p>No. The extension works on the Amazon A to Z page already open in your browser and does not need your Amazon password.</p></details>
-        <details class="faq-item reveal"><summary>How do updates work?</summary><p>The extension checks the GitHub release feed. When a newer version is available, it can open the current GitHub ZIP download. Because the extension is loaded unpacked, you still extract the update and reload it in Chrome.</p></details>
-        <details class="faq-item reveal"><summary>Can the extension silently install updates?</summary><p>No. Chrome does not allow an unpacked extension to silently replace its own local files. The update button downloads the new build; you then replace the files and press Reload.</p></details>
-        <details class="faq-item reveal"><summary>Can licensing make the extension impossible to copy?</summary><p>No browser extension can provide perfect DRM because its client-side code exists on the user's computer. VTO Watcher licensing is designed to stop normal unauthorized activation and allow the owner to revoke access.</p></details>
-      </div>
-    </section>
-
+    <section class="content-section section-shell" id="features"><div class="section-heading reveal"><div class="eyebrow">Features</div><h2>Built around speed, visibility, and control.</h2><p>Everything important stays visible without turning the page into a mess.</p></div><div class="feature-grid"><article class="feature-card reveal"><div class="feature-icon">◉</div><h3>Fast VTO monitoring</h3><p>Choose refresh intervals starting at 5 seconds and scan the visible VTO page for eligible offers.</p></article><article class="feature-card reveal delay-1"><div class="feature-icon">↗</div><h3>Instant alerts</h3><p>Desktop notifications, sound, tab flashing, and an update badge help keep important changes noticeable.</p></article><article class="feature-card reveal delay-2"><div class="feature-icon">⌁</div><h3>Offer filters</h3><p>Filter by minimum hours, start time, and longest-offer preference so the watcher focuses on what you want.</p></article><article class="feature-card reveal"><div class="feature-icon">▣</div><h3>Smart status detection</h3><p>Filled, expired, unavailable, and previously accepted offers are ignored to reduce false positives.</p></article><article class="feature-card reveal delay-1"><div class="feature-icon">◇</div><h3>License protected</h3><p>Activation, device limits, expiration, revocation, and version access are controlled by the license server.</p></article><article class="feature-card reveal delay-2"><div class="feature-icon">↓</div><h3>Simple GitHub updates</h3><p>When a newer build is available, the extension shows an update notice and downloads the ZIP from GitHub.</p></article></div></section>
+    <section class="split-section section-shell" id="how"><div class="section-heading reveal"><div class="eyebrow">How it works</div><h2>Three steps from install to monitoring.</h2></div><div class="steps"><article class="step reveal"><span class="step-number">01</span><div><h3>Install</h3><p>Download the latest VTO Watcher ZIP, extract it, and load the extension folder through Chrome Developer Mode.</p></div></article><article class="step reveal delay-1"><span class="step-number">02</span><div><h3>Activate</h3><p>Enter your VTO Watcher license key. The license server validates the key and registers the permitted device.</p></div></article><article class="step reveal delay-2"><span class="step-number">03</span><div><h3>Monitor</h3><p>Open Amazon A to Z, go to the VTO page, configure your filters, and arm the watcher when you are ready.</p></div></article></div></section>
+    <section class="download-section" id="download"><div class="section-shell download-wrap"><div class="download-copy reveal"><div class="eyebrow">Latest release</div><h2>Download VTO Watcher</h2><p id="releaseMessage">The current GitHub release is ready to download.</p><div class="version-line"><span class="release-badge" id="latestVersionBadge">v4.2.6</span><span id="releaseStatus">Checking GitHub release feed…</span></div><a class="button primary large" id="downloadButton" href="https://raw.githubusercontent.com/user1242151321/test/main/updates/VTO_Watcher_4.2.6.zip">↓ Download latest ZIP</a><p class="license-note">A valid VTO Watcher license is required to use the extension.</p></div><div class="install-card reveal delay-1"><h3>Quick install</h3><ol><li><span>1</span><div><b>Download & extract</b><small>Extract the ZIP to a permanent folder.</small></div></li><li><span>2</span><div><b>Open Chrome extensions</b><small>Go to <code>chrome://extensions</code>.</small></div></li><li><span>3</span><div><b>Enable Developer mode</b><small>Turn it on in the upper-right corner.</small></div></li><li><span>4</span><div><b>Load unpacked</b><small>Select the extracted <code>extension</code> folder.</small></div></li><li><span>5</span><div><b>Activate your license</b><small>Open VTO Watcher and enter your license key.</small></div></li></ol></div></div></section>
+    <section class="content-section section-shell" id="changelog"><div class="section-heading reveal"><div class="eyebrow">Changelog</div><h2>Recent VTO Watcher updates.</h2></div><div class="timeline"><article class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-top"><h3>Version 4.2.6</h3><span>Current</span></div><p>Refreshed the extension popup with the dark neon VTO Watcher interface and new green V branding.</p></div></article><article class="timeline-item reveal delay-1"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-top"><h3>Version 4.2.5</h3><span>GitHub updates</span></div><p>Moved extension update downloads from Cloudflare R2 to GitHub while keeping Cloudflare for license validation.</p></div></article><article class="timeline-item reveal delay-2"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-top"><h3>Version 4.2.1</h3><span>Detection fix</span></div><p>Improved VTO card detection so filled and previously accepted offers are not incorrectly reported as eligible.</p></div></article></div></section>
+    <section class="content-section section-shell" id="faq"><div class="section-heading reveal"><div class="eyebrow">FAQ</div><h2>Common questions.</h2></div><div class="faq-list"><details class="faq-item reveal"><summary>Do I need a license?</summary><p>Yes. VTO Watcher uses server-side license validation. A license can also have device, expiration, and version-access limits.</p></details><details class="faq-item reveal"><summary>Does VTO Watcher store my Amazon password?</summary><p>No. The extension works on the Amazon A to Z page already open in your browser and does not need your Amazon password.</p></details><details class="faq-item reveal"><summary>How do updates work?</summary><p>The extension checks the GitHub release feed. When a newer version is available, it can open the current GitHub ZIP download. Because the extension is loaded unpacked, you still extract the update and reload it in Chrome.</p></details><details class="faq-item reveal"><summary>Can the extension silently install updates?</summary><p>No. Chrome does not allow an unpacked extension to silently replace its own local files. The update button downloads the new build; you then replace the files and press Reload.</p></details><details class="faq-item reveal"><summary>Can licensing make the extension impossible to copy?</summary><p>No browser extension can provide perfect DRM because its client-side code exists on the user's computer. VTO Watcher licensing is designed to stop normal unauthorized activation and allow the owner to revoke access.</p></details></div></section>
     <section class="final-cta section-shell reveal"><div><div class="eyebrow">Ready when you are</div><h2>Keep your VTO monitoring in one place.</h2><p>Download the latest build, activate your license, and configure your watcher.</p></div><a class="button primary large" id="bottomDownload" href="#download">Download VTO Watcher</a></section>
   </main>
-
-  <footer class="site-footer"><div class="section-shell footer-inner"><div><a class="brand footer-brand" href="#top"><span class="brand-mark">V</span><span>VTO Watcher</span></a><p>Licensed Chrome extension for VTO monitoring.</p></div><div class="footer-links"><a href="#features">Features</a><a href="#download">Download</a><a href="#faq">FAQ</a><a href="admin.html">Owner Login</a></div><p class="copyright">© <span id="year"></span> VTO Watcher. Not affiliated with Amazon.</p></div></footer>
+  <footer class="site-footer"><div class="section-shell footer-inner"><div><a class="brand footer-brand" href="#top"><span class="brand-mark">V</span><span>VTO Watcher</span></a><p>Licensed Chrome extension for VTO monitoring.</p></div><div class="footer-links"><a href="#features">Features</a><a href="#download">Download</a><a href="#faq">FAQ</a></div><p class="copyright">© <span id="year"></span> VTO Watcher. Not affiliated with Amazon.</p></div></footer>
   <script src="app.js"></script>
 </body>
 </html>
