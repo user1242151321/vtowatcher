@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.2.5",
+  "latestVersion": "4.2.6",
   "minimumVersion": "4.0.0",
-  "message": "V4.2.5 switches update downloads from Cloudflare R2 to GitHub.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/test/main/updates/VTO_Watcher_4.2.5.zip"
+  "message": "V4.2.6 refreshes the VTO Watcher popup with the new dark neon GUI and V brand icon.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/test/main/updates/VTO_Watcher_4.2.6.zip"
 }
