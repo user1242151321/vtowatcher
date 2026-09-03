@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.2.8";
-const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.2.8.html";
+const FALLBACK_VERSION = "4.2.9";
+const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.2.9.html";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
@@ -45,7 +45,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "Smoothed the extension popup edges to match the live watcher and added safer VTO navigation plus controlled recovery when Amazon A to Z loads a blank page.";
+  if (copy) copy.textContent = "Prevented VTO Watcher from forcing full Amazon A to Z page reloads that could leave the main screen white, while keeping the watcher scanning safely.";
 }
 
 function setReleaseUI(version, downloadUrl, message, live = true) {
