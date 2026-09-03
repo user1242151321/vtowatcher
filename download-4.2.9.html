@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Downloading VTO Watcher 4.2.9</title>
+  <style>
+    :root{--bg:#07111f;--panel:#0b1727;--line:rgba(255,255,255,.09);--text:#f7fbff;--muted:#92a6bc;--green:#54f0a5}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 0%,rgba(84,240,165,.08),transparent 35%),var(--bg)}.card{width:min(520px,100%);padding:32px;border:1px solid var(--line);border-radius:22px;background:var(--panel);box-shadow:0 24px 80px rgba(0,0,0,.35)}.brand{display:flex;align-items:center;gap:10px;font-weight:800}.v{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:var(--green);color:#04140d;font-weight:900}h1{margin:26px 0 10px;font-size:30px;letter-spacing:-.04em}p{color:var(--muted);line-height:1.6}.status{margin-top:20px;padding:13px;border-radius:13px;background:rgba(84,240,165,.07);color:#bff9dc;font-size:13px;font-weight:700}button,a.button{width:100%;min-height:44px;margin-top:12px;border:0;border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-weight:800;cursor:pointer;background:var(--green);color:#04140d}.hidden{display:none!important}.small{font-size:11px}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span class="v">V</span><span>VTO Watcher</span></div>
+    <h1>Preparing v4.2.9…</h1>
+    <p>This release prevents VTO Watcher from forcing full Amazon A to Z page reloads, which could leave the main screen white while the A to Z header remained visible.</p>
+    <div id="status" class="status">Loading release files…</div>
+    <button id="retry" class="hidden">Try download again</button>
+    <a id="fallback" class="button hidden" href="https://vtowatcher.pages.dev/download-4.2.8.html">Download v4.2.8 fallback</a>
+    <p class="small">A valid VTO Watcher license is still required to use the extension.</p>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script>
+    const BASE='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.2.6.zip';
+    const CONTENT_CSS='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.7/content.css';
+    const BACKGROUND='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.7/background_427.js';
+    const POPUP_CSS='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.8/popup.css';
+    const MANIFEST='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.9/manifest.json';
+    const GUARD='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.9/reload_guard_429.js';
+    const PATCH='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.9/content_patch_429.js';
+    const statusEl=document.getElementById('status');const retry=document.getElementById('retry');const fallback=document.getElementById('fallback');
+    async function get(url,type='text'){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);return type==='arrayBuffer'?r.arrayBuffer():r.text()}
+    async function build(){retry.classList.add('hidden');fallback.classList.add('hidden');statusEl.textContent='Downloading the GitHub release…';try{const [base,contentCss,background,popupCss,manifest,guard,patch]=await Promise.all([get(BASE,'arrayBuffer'),get(CONTENT_CSS),get(BACKGROUND),get(POPUP_CSS),get(MANIFEST),get(GUARD),get(PATCH)]);statusEl.textContent='Applying the v4.2.9 white-screen fix…';const zip=await JSZip.loadAsync(base);zip.file('content.css',contentCss);zip.file('background_427.js',background);zip.file('popup.css',popupCss);zip.file('manifest.json',manifest);zip.file('reload_guard_429.js',guard);zip.file('content_patch_429.js',patch);zip.file('README_4.2.9.txt','VTO Watcher 4.2.9\n\n- prevents automatic full-page A to Z reloads\n- blocks generic synthetic navigation clicks\n- removes automatic blank-page recovery reload loops\n\nReload the extension in chrome://extensions after updating.\n');statusEl.textContent='Creating VTO_Watcher_4.2.9.zip…';const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='VTO_Watcher_4.2.9.zip';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);statusEl.textContent='Download started — VTO Watcher v4.2.9 is ready.'}catch(e){console.error(e);statusEl.textContent='Could not build the update automatically. Try again or use the fallback.';retry.classList.remove('hidden');fallback.classList.remove('hidden')}}retry.addEventListener('click',build);build();
+  </script>
+</body>
+</html>
