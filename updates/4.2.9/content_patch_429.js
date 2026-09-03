@@ -5,6 +5,8 @@
   window.__VTO_WATCHER_429_PATCH__ = true;
 
   const normalize = text => String(text || "").replace(/\s+/g, " ").trim().toLowerCase();
+  let nextCheckAt = 0;
+  let lastInterval = 0;
 
   function textOf(el) {
     if (!el) return "";
@@ -43,7 +45,58 @@
     console.warn("[VTO Watcher V4.2.9] Blocked generic synthetic navigation click:", text);
   }, true);
 
-  setInterval(async () => {
+  function renameCardLabel(strong, label) {
+    const card = strong?.parentElement;
+    if (!card) return;
+    const textNode = [...card.childNodes].find(node => node.nodeType === Node.TEXT_NODE);
+    if (textNode) textNode.textContent = label;
+  }
+
+  async function maintainSafeCheckCycle() {
+    let state;
+    try {
+      state = await chrome.storage.local.get({ armed: false, paused: false, refreshSeconds: 5 });
+    } catch (_) {
+      return;
+    }
+
+    const countdown = document.getElementById("vto-v4-countdown");
+    const intervalLabel = document.getElementById("vto-v4-interval-label");
+    renameCardLabel(countdown, "Next check");
+    renameCardLabel(intervalLabel, "Check interval");
+
+    const seconds = Math.max(5, Number(state.refreshSeconds) || 5);
+    if (intervalLabel) intervalLabel.textContent = `${seconds}s`;
+
+    if (!state.armed) {
+      nextCheckAt = 0;
+      lastInterval = seconds;
+      if (countdown) countdown.textContent = "--";
+      return;
+    }
+
+    if (state.paused) {
+      nextCheckAt = 0;
+      lastInterval = seconds;
+      if (countdown) countdown.textContent = "PAUSED";
+      return;
+    }
+
+    const now = Date.now();
+    if (!nextCheckAt || lastInterval !== seconds) {
+      lastInterval = seconds;
+      nextCheckAt = now + seconds * 1000;
+    }
+
+    if (now >= nextCheckAt) {
+      nextCheckAt = now + seconds * 1000;
+      try { await chrome.storage.local.set({ vto429CheckTick: now }); } catch (_) {}
+    }
+
+    if (countdown) countdown.textContent = `${Math.max(1, Math.ceil((nextCheckAt - now) / 1000))}s`;
+  }
+
+  async function blankPageCheck() {
     let state;
     try { state = await chrome.storage.local.get({ armed: false, paused: false }); } catch (_) { return; }
     if (!state.armed || state.paused || document.readyState !== "complete") return;
@@ -57,5 +110,8 @@
       status.textContent = "A to Z content blank — auto reload blocked";
       status.style.background = "#92400e";
     }
-  }, 1800);
+  }
+
+  setInterval(maintainSafeCheckCycle, 250);
+  setInterval(blankPageCheck, 1800);
 })();
