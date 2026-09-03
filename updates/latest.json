@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.3.3",
+  "latestVersion": "4.3.4",
   "minimumVersion": "4.0.0",
-  "message": "V4.3.3 fixes Runtime flickering by disabling the old page-session clock so only the persistent armed-session timer updates Runtime.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.3.html"
+  "message": "V4.3.4 fixes missed live VTO actions by allowing verified offer-card opener clicks and adds a fallback accept/confirm handler while keeping white-screen protection.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.4.html"
 }
