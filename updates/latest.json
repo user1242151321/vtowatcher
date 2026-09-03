@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.2.7",
+  "latestVersion": "4.2.8",
   "minimumVersion": "4.0.0",
-  "message": "V4.2.7 redesigns the actual on-page VTO dashboard to match the VTO Watcher website.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.2.7.html"
+  "message": "V4.2.8 smooths the popup edges to match the live watcher and adds safer blank-page/navigation recovery.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.2.8.html"
 }
