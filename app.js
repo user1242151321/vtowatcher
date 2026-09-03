@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.2.9";
-const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.2.9.html";
+const FALLBACK_VERSION = "4.3.2";
+const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.3.2.html";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
@@ -45,7 +45,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "Prevented VTO Watcher from forcing full Amazon A to Z page reloads that could leave the main screen white, while keeping the watcher scanning safely.";
+  if (copy) copy.textContent = "Runtime now stays tied to the current armed session, so VTO refreshes and navigation no longer reset the timer.";
 }
 
 function setReleaseUI(version, downloadUrl, message, live = true) {
