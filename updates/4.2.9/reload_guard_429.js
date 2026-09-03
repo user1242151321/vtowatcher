@@ -13,9 +13,7 @@
       try { source = fnToString.call(handler); } catch (_) {}
 
       if (/\blocation\.reload\s*\(/.test(source)) {
-        return nativeSetTimeout(() => {
-          console.warn("[VTO Watcher V4.2.9] Prevented automatic full-page reload.");
-        }, Math.max(0, Number(delay) || 0));
+        return nativeSetTimeout(() => {}, Math.max(0, Number(delay) || 0));
       }
     }
 
