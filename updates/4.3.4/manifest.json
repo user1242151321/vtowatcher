@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "VTO Watcher",
+  "version": "4.3.4",
+  "description": "VTO Watcher with verified live-offer actions, persistent runtime, robust A to Z soft refresh, white-screen protection, website-matched UI, GitHub-hosted updates, and Cloudflare license validation.",
+  "permissions": [
+    "notifications",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://atoz.amazon.work/*",
+    "https://vto-license-server.vto-license-ks.workers.dev/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background_427.js"
+  },
+  "action": {
+    "default_title": "VTO Watcher",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://atoz.amazon.work/*"
+      ],
+      "js": [
+        "license_guard.js",
+        "reload_guard_429.js",
+        "runtime_guard_433.js",
+        "click_guard_434.js",
+        "content.js",
+        "content_patch_431.js",
+        "runtime_patch_432.js",
+        "accept_patch_434.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
