@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.2.8",
+  "latestVersion": "4.2.9",
   "minimumVersion": "4.0.0",
-  "message": "V4.2.8 smooths the popup edges to match the live watcher and adds safer blank-page/navigation recovery.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.2.8.html"
+  "message": "V4.2.9 prevents automatic full-page Amazon A to Z reloads that could leave the main screen white, while keeping the watcher scanning safely.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.2.9.html"
 }
