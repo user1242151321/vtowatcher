@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.2.6",
+  "latestVersion": "4.2.7",
   "minimumVersion": "4.0.0",
-  "message": "V4.2.6 refreshes the VTO Watcher popup with the new dark neon GUI and V brand icon.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/test/main/updates/VTO_Watcher_4.2.6.zip"
+  "message": "V4.2.7 redesigns the actual on-page VTO dashboard to match the VTO Watcher website.",
+  "downloadUrl": "https://user1242151321.github.io/vtowatcher/download-4.2.7.html"
 }
