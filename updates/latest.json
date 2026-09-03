@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.2.9",
+  "latestVersion": "4.3.0",
   "minimumVersion": "4.0.0",
-  "message": "V4.2.9 prevents automatic full-page Amazon A to Z reloads that could leave the main screen white, while keeping the watcher scanning safely.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.2.9.html"
+  "message": "V4.3.0 restores real VTO refreshing through A to Z's own Schedule → VTO navigation while keeping the hard-reload white-screen protection.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.0.html"
 }
