@@ -9,7 +9,7 @@
     "https://vto-license-server.vto-license-ks.workers.dev/*",
     "https://raw.githubusercontent.com/*"
   ],
-  "background": { "service_worker": "background.js" },
+  "background": { "service_worker": "background_427.js" },
   "action": {
     "default_title": "VTO Watcher",
     "default_popup": "popup.html"
