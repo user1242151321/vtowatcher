@@ -18,7 +18,7 @@
   <main class="card">
     <div class="brand"><span class="v">V</span><span>VTO Watcher</span></div>
     <h1>Preparing v4.2.7…</h1>
-    <p>This page builds the official VTO Watcher 4.2.7 ZIP directly from the GitHub-hosted 4.2.6 release plus the 4.2.7 dashboard patch, then starts the download automatically.</p>
+    <p>This page builds the official VTO Watcher 4.2.7 ZIP from the GitHub-hosted 4.2.6 release and applies the 4.2.7 dashboard and update-router files automatically.</p>
     <div id="status" class="status">Loading release files…</div>
     <button id="retry" class="hidden">Try download again</button>
     <a id="fallback" class="button hidden" href="https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.2.6.zip">Download v4.2.6 fallback</a>
@@ -29,6 +29,7 @@
     const BASE='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.2.6.zip';
     const CSS='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.7/content.css';
     const MANIFEST='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.7/manifest.json';
+    const BACKGROUND='https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/4.2.7/background_427.js';
     const statusEl=document.getElementById('status');
     const retry=document.getElementById('retry');
     const fallback=document.getElementById('fallback');
@@ -36,12 +37,13 @@
     async function build(){
       retry.classList.add('hidden');fallback.classList.add('hidden');statusEl.textContent='Downloading the GitHub release…';
       try{
-        const [base,css,manifest]=await Promise.all([get(BASE,'arrayBuffer'),get(CSS),get(MANIFEST)]);
+        const [base,css,manifest,background]=await Promise.all([get(BASE,'arrayBuffer'),get(CSS),get(MANIFEST),get(BACKGROUND)]);
         statusEl.textContent='Applying the v4.2.7 dashboard update…';
         const zip=await JSZip.loadAsync(base);
         zip.file('content.css',css);
         zip.file('manifest.json',manifest);
-        const readme=`VTO Watcher 4.2.7\n\nThis release redesigns the actual on-page VTO dashboard to match the VTO Watcher website.\n\nUpdate: extract this ZIP, copy the files over your current extension folder, then reload VTO Watcher in chrome://extensions and refresh Amazon A to Z.\n`;
+        zip.file('background_427.js',background);
+        const readme=`VTO Watcher 4.2.7\n\nThis release redesigns the actual on-page VTO dashboard to match the VTO Watcher website and updates the release feed to the renamed vtowatcher GitHub repo.\n\nUpdate: extract this ZIP, copy the files over your current extension folder, then reload VTO Watcher in chrome://extensions and refresh Amazon A to Z.\n`;
         zip.file('README_4.2.7.txt',readme);
         statusEl.textContent='Creating VTO_Watcher_4.2.7.zip…';
         const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'});
