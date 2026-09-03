@@ -1,6 +1,6 @@
-const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/test/main/updates/latest.json";
-const FALLBACK_VERSION = "4.2.6";
-const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/test/main/updates/VTO_Watcher_4.2.6.zip";
+const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
+const FALLBACK_VERSION = "4.2.7";
+const FALLBACK_DOWNLOAD = "https://user1242151321.github.io/vtowatcher/download-4.2.7.html";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
