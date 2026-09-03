@@ -109,7 +109,6 @@
     const range = parseRange(raw);
     return {
       card,
-      raw,
       unavailable: unavailable(raw),
       hours: parseHours(raw),
       startMinutes: range?.startMinutes ?? null
@@ -165,13 +164,14 @@
     el.style.background = color;
   }
 
-  async function clickAction(el, message) {
+  async function clickAction(el, message, isConfirm = false) {
     if (!el || acting) return false;
     acting = true;
     try {
       el.setAttribute("data-vto-live-offer-action", "1");
       sessionStorage.setItem(LAST_ACTION_KEY, String(Date.now()));
-      sessionStorage.setItem(PENDING_KEY, String(Date.now()));
+      if (isConfirm) sessionStorage.removeItem(PENDING_KEY);
+      else sessionStorage.setItem(PENDING_KEY, String(Date.now()));
       status(message);
       el.scrollIntoView({ block: "center", behavior: "auto" });
       el.click();
@@ -193,6 +193,7 @@
         armed: false,
         paused: false,
         autoConfirm: false,
+        testMode: false,
         minHours: 0,
         startAfter: "any",
         preferLongest: true
@@ -207,23 +208,44 @@
     if (last && Date.now() - last < 1400) return;
 
     const pendingAt = Number(sessionStorage.getItem(PENDING_KEY) || 0);
-    if (state.autoConfirm && pendingAt && Date.now() - pendingAt < 30000) {
+    const pendingAge = pendingAt ? Date.now() - pendingAt : 0;
+
+    if (pendingAt && pendingAge < 30000) {
       const confirm = findConfirm();
+
       if (confirm) {
-        await clickAction(confirm, "Confirming VTO...");
+        if (state.testMode) {
+          status("TEST MODE — would confirm VTO");
+          return;
+        }
+        if (!state.autoConfirm) {
+          status("VTO ready — Auto Confirm OFF", "#b45309");
+          return;
+        }
+        await clickAction(confirm, "Confirming VTO...", true);
         return;
       }
+
+      if (pendingAge < 5000) return;
+    } else if (pendingAt) {
+      sessionStorage.removeItem(PENDING_KEY);
     }
 
     const best = eligibleCards(state)[0];
     if (!best) return;
 
     const action = findCardAction(best.card);
-    if (action) {
-      await clickAction(action, "VTO FOUND — opening offer...");
-    } else {
+    if (!action) {
       status("VTO FOUND — action button not recognized", "#b45309");
+      return;
     }
+
+    if (state.testMode) {
+      status("TEST MODE — would open VTO", "#b45309");
+      return;
+    }
+
+    await clickAction(action, "VTO FOUND — opening offer...");
   }
 
   setInterval(tick, 250);
