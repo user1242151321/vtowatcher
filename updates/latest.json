@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.3.2",
+  "latestVersion": "4.3.3",
   "minimumVersion": "4.0.0",
-  "message": "V4.3.2 keeps Runtime tied to the current armed session so refreshes and VTO navigation no longer reset the timer.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.2.html"
+  "message": "V4.3.3 fixes Runtime flickering by disabling the old page-session clock so only the persistent armed-session timer updates Runtime.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.3.html"
 }
