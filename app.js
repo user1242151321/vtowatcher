@@ -37,8 +37,20 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 
+function updateChangelog(version) {
+  const first = document.querySelector("#changelog .timeline-item:first-child");
+  if (!first) return;
+  const title = first.querySelector("h3");
+  const label = first.querySelector(".timeline-top span");
+  const copy = first.querySelector("p");
+  if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
+  if (label) label.textContent = "Current";
+  if (copy) copy.textContent = "Redesigned the actual on-page VTO dashboard to match the VTO Watcher website, with dark glass panels, green V branding, and website-style controls.";
+}
+
 function setReleaseUI(version, downloadUrl, message, live = true) {
-  const versionText = `v${version || FALLBACK_VERSION}`;
+  const actualVersion = version || FALLBACK_VERSION;
+  const versionText = `v${actualVersion}`;
   const url = downloadUrl || FALLBACK_DOWNLOAD;
   const heroVersion = document.getElementById("heroVersion");
   const latestVersionBadge = document.getElementById("latestVersionBadge");
@@ -51,6 +63,7 @@ function setReleaseUI(version, downloadUrl, message, live = true) {
   if (latestVersionBadge) latestVersionBadge.textContent = versionText;
   if (releaseStatus) releaseStatus.textContent = live ? "Live GitHub release feed" : "Using built-in release fallback";
   if (releaseMessage && message) releaseMessage.textContent = message;
+  updateChangelog(actualVersion);
   [downloadButton, heroDownload, bottomDownload].forEach(button => {
     if (!button) return;
     button.href = url;
