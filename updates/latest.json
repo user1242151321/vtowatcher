@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.3.1",
+  "latestVersion": "4.3.2",
   "minimumVersion": "4.0.0",
-  "message": "V4.3.1 improves the A to Z soft refresh so it can find the hamburger/menu flow and reopen Schedule → VTO without hard-reloading the page.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.1.html"
+  "message": "V4.3.2 keeps Runtime tied to the current armed session so refreshes and VTO navigation no longer reset the timer.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.2.html"
 }
