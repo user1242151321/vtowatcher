@@ -71,7 +71,7 @@
       if (schedule) { clickForRefresh(schedule); await sleep(350); }
       let vto = findTarget("vto");
       if (!vto) { const menu=findMenuButton(); if (menu) { clickForRefresh(menu); await sleep(250); vto=findTarget("vto"); } }
-      if (!vto) { console.warn("[VTO Watcher V4.3.0] Soft refresh could not find VTO navigation."); return false; }
+      if (!vto) return false;
       clickForRefresh(vto); await sleep(650); softRefreshCount++; return true;
     } finally { refreshing=false; }
   }
@@ -90,7 +90,7 @@
     const clickable=target.closest('button,a,[role="button"],[onclick],[tabindex]')||target;
     if (clickable.closest?.('[data-vto-soft-refresh="1"]')) return;
     const text=textOf(clickable); if (safeVtoAction(text) || !unsafeGenericAction(text)) return;
-    event.preventDefault(); event.stopImmediatePropagation(); console.warn("[VTO Watcher V4.3.0] Blocked unsafe synthetic navigation click:",text);
+    event.preventDefault(); event.stopImmediatePropagation();
   },true);
 
   function renameCardLabel(strong,label) { const card=strong?.parentElement; if (!card) return; const node=[...card.childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if (node) node.textContent=label; }
