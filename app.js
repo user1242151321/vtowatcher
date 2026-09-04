@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.3.2";
-const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.3.2.html";
+const FALLBACK_VERSION = "4.4.0";
+const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.0.html";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
@@ -45,7 +45,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "Runtime now stays tied to the current armed session, so VTO refreshes and navigation no longer reset the timer.";
+  if (copy) copy.textContent = "A full GUI polish unifies the popup and live watcher with smoother rounded shells, cards, controls, spacing, shadows, and status surfaces while preserving the V4.3.4 live-VTO behavior.";
 }
 
 function setReleaseUI(version, downloadUrl, message, live = true) {
