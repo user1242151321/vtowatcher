@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.4.2",
+  "latestVersion": "4.4.3",
   "minimumVersion": "4.0.0",
-  "message": "V4.4.2 matches the license popup outline to the live watcher, removes the confusing LIVE badge, and balances License / Access / Expires / Device so the license label no longer looks out of place.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.4.2.html"
+  "message": "V4.4.3 fixes the accidental orange/brown popup outline, matches the live watcher mint border and 30px radius, and removes the doubled inner corner stroke.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.4.3.html"
 }
