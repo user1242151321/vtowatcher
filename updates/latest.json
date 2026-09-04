@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.3.4",
+  "latestVersion": "4.4.0",
   "minimumVersion": "4.0.0",
-  "message": "V4.3.4 fixes missed live VTO actions by allowing verified offer-card opener clicks and adds a fallback accept/confirm handler while keeping white-screen protection.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.3.4.html"
+  "message": "V4.4.0 gives the popup and live watcher one polished rounded GUI with smoother cards, controls, spacing, shadows, and status surfaces while preserving the V4.3.4 live-VTO behavior.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.4.0.html"
 }
