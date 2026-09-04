@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.4.0";
-const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.0.html";
+const FALLBACK_VERSION = "4.4.1";
+const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.1.html";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
@@ -45,7 +45,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "A full GUI polish unifies the popup and live watcher with smoother rounded shells, cards, controls, spacing, shadows, and status surfaces while preserving the V4.3.4 live-VTO behavior.";
+  if (copy) copy.textContent = "A visibly redesigned popup replaces the four boxy license cards with a cleaner license hero layout, pill-style status and actions, and a smoother rounder live watcher while preserving the V4.3.4 live-VTO behavior.";
 }
 
 function setReleaseUI(version, downloadUrl, message, live = true) {
