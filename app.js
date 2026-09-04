@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.4.2";
-const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.2.html";
+const FALLBACK_VERSION = "4.4.3";
+const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.3.html";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
@@ -45,7 +45,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "The license popup now matches the live watcher outline, removes the confusing LIVE badge, and balances License, Access, Expires, and Device into one cleaner four-part details panel.";
+  if (copy) copy.textContent = "The license popup now uses the same mint outer border and 30px corner radius as the live watcher, with the accidental orange/brown outline and doubled inner corner stroke removed.";
 }
 
 function setReleaseUI(version, downloadUrl, message, live = true) {
