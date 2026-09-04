@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VTO Watcher</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-icon">V</div>
+        <div class="brand-text">
+          <div class="brand-title">VTO Watcher</div>
+          <div class="brand-sub">Licensed extension • v<span id="currentVersion"></span></div>
+        </div>
+      </div>
+      <div class="live-pill"><span class="live-dot"></span>LIVE</div>
+    </div>
+
+    <div id="message" class="status-bar">Checking license…</div>
+
+    <div id="updateBox" class="panel update-panel hidden">
+      <div class="panel-title-row">
+        <div>
+          <div class="eyebrow">Release</div>
+          <div class="panel-title">Update center</div>
+        </div>
+        <div id="updateHeading" class="mini-badge">UPDATE AVAILABLE</div>
+      </div>
+      <div id="updateText" class="panel-copy"></div>
+      <button id="updateBtn" class="action-primary hidden">Download update</button>
+      <div id="noUpdateUrl" class="soft-note hidden">The GitHub update download is not available yet.</div>
+      <div class="steps-box">
+        <div class="steps-title">After downloading</div>
+        <div>Extract the ZIP → replace the extension files → Reload in chrome://extensions.</div>
+      </div>
+      <button id="copyStepsBtn" class="action-secondary compact">Copy update steps</button>
+    </div>
+
+    <div id="activateBox" class="panel auth-panel hidden">
+      <div class="eyebrow">Activation</div>
+      <div class="panel-title auth-title">Activate this device</div>
+      <div class="panel-copy">Enter your license key to unlock VTO Watcher on this browser.</div>
+      <label for="licenseKey">License key</label>
+      <input id="licenseKey" type="text" placeholder="VTO-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off">
+      <button id="activateBtn" class="action-primary">Activate</button>
+    </div>
+
+    <div id="activeBox" class="hidden">
+      <section class="license-hero">
+        <div class="license-glow"></div>
+        <div class="license-topline">
+          <div>
+            <div class="eyebrow">License</div>
+            <div id="licenseLabel" class="license-name">Active</div>
+          </div>
+          <div class="access-chip">
+            <span>Access</span>
+            <strong id="versionAccess">Through V4</strong>
+          </div>
+        </div>
+
+        <div class="meta-strip">
+          <div class="meta-item">
+            <span>Expires</span>
+            <strong id="expires">—</strong>
+          </div>
+          <div class="meta-divider"></div>
+          <div class="meta-item device-meta">
+            <span>Device</span>
+            <strong id="device">—</strong>
+          </div>
+        </div>
+      </section>
+
+      <div class="action-dock">
+        <button id="openBtn" class="action-primary">Open A to Z</button>
+        <button id="deactivateBtn" class="action-secondary">Deactivate</button>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Updates are served through GitHub. Licensing is validated through Cloudflare.
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
