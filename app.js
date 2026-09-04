@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.4.3";
-const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.3.html";
+const FALLBACK_VERSION = "4.4.4";
+const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.4.html";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
@@ -45,7 +45,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "The license popup now uses the same mint outer border and 30px corner radius as the live watcher, with the accidental orange/brown outline and doubled inner corner stroke removed.";
+  if (copy) copy.textContent = "The remaining popup corner seam is removed by making the popup background and rounded shell one continuous surface, with only one mint 30px outline drawn on top.";
 }
 
 function setReleaseUI(version, downloadUrl, message, live = true) {
