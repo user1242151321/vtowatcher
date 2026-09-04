@@ -1,6 +1,6 @@
 {
-  "latestVersion": "4.4.1",
+  "latestVersion": "4.4.2",
   "minimumVersion": "4.0.0",
-  "message": "V4.4.1 visibly redesigns the popup with a new license hero layout, pill-style status and controls, and a smoother rounder live watcher while preserving the V4.3.4 live-VTO behavior.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.4.1.html"
+  "message": "V4.4.2 matches the license popup outline to the live watcher, removes the confusing LIVE badge, and balances License / Access / Expires / Device so the license label no longer looks out of place.",
+  "downloadUrl": "https://vtowatcher.pages.dev/download-4.4.2.html"
 }
