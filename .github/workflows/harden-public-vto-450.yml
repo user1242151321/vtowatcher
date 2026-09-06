@@ -1,0 +1,57 @@
+name: Harden public VTO Watcher 4.5.0 engine
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/harden-public-vto-450.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tighten public acceptance state machine
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('updates/4.5.0/vto_engine_450.js')
+          s=p.read_text()
+          replacements=[
+            ('let scanning=false, acting=false, refreshing=false, nextRefreshAt=0, refreshHoldUntil=0, lastActionAt=0, lastNoticeAt=0, pendingActionAt=0;',
+             'let scanning=false, acting=false, refreshing=false, nextRefreshAt=0, refreshHoldUntil=0, lastActionAt=0, lastNoticeAt=0, pendingActionAt=0, pendingStage="", lastOfferSignature="";'),
+            ('el.click(); pendingActionAt=Date.now(); await sleep(650); return true;',
+             'el.click(); pendingActionAt=Date.now(); pendingStage=stage; await sleep(650); return true;'),
+            ('if(successDetected()&&pendingActionAt){',
+             'if(successDetected()&&pendingActionAt&&pendingStage==="CONFIRM CLICK"){'),
+            ('const confirm=confirmButton();',
+             'if(pendingStage==="CONFIRM CLICK"&&pendingActionAt&&Date.now()-pendingActionAt<5000){setStatus("Verifying VTO acceptance…","found");return;}\n      const confirm=confirmButton();'),
+            ('const list=eligible(), best=list[0]||null; if(ui.offer)ui.offer.textContent=describe(best);',
+             'if(pendingStage==="OFFER ACTION"&&pendingActionAt&&Date.now()-pendingActionAt<5000){setStatus("Waiting for VTO offer…","found");return;}\n      const list=eligible(), best=list[0]||null; if(ui.offer)ui.offer.textContent=describe(best);'),
+            ('if(!best){ if(old){stats.old=Math.max(stats.old,old);',
+             'if(!best){ lastOfferSignature=""; if(old){stats.old=Math.max(stats.old,old);'),
+            ('stats.found++; renderStats(); alertFound(best); log("OFFER FOUND",describe(best));',
+             'const signature=describe(best); if(signature!==lastOfferSignature){lastOfferSignature=signature;stats.found++;renderStats();alertFound(best);log("OFFER FOUND",signature);}'),
+            ('stats={checks:0,refreshes:0,found:0,old:0,errors:0};logs=[];pendingActionAt=0;const started=Date.now();',
+             'stats={checks:0,refreshes:0,found:0,old:0,errors:0};logs=[];pendingActionAt=0;pendingStage="";lastOfferSignature="";const started=Date.now();'),
+            ('async function disarm(reason="Disarmed"){stopFlash();',
+             'async function disarm(reason="Disarmed"){pendingActionAt=0;pendingStage="";lastOfferSignature="";stopFlash();')
+          ]
+          for old,new in replacements:
+              if old not in s:
+                  raise SystemExit(f'missing expected engine pattern: {old[:90]}')
+              s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+          node --check updates/4.5.0/vto_engine_450.js
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/4.5.0/vto_engine_450.js
+          git commit -m "Harden public VTO 4.5.0 acceptance state machine"
+          git push
