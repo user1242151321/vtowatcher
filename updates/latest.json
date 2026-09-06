@@ -1,6 +1,6 @@
 {
   "latestVersion": "4.4.4",
   "minimumVersion": "4.0.0",
-  "message": "V4.4.4 fixes the remaining popup corner seam by using one continuous background surface and a single mint 30px rounded outline, eliminating the visible square layer behind the curve.",
-  "downloadUrl": "https://vtowatcher.pages.dev/download-4.4.4.html"
+  "message": "V4.4.4 fixes the remaining popup corner seam and now downloads as a direct prebuilt GitHub ZIP.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.4.4.zip"
 }
