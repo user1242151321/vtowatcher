@@ -25,7 +25,6 @@ jobs:
           mkdir -p .release-450
           unzip -q updates/VTO_Watcher_4.4.4.zip -d .release-450
 
-          # Remove the old patch stack. v4.5.0 loads one watcher engine only.
           rm -f .release-450/content.js \
                 .release-450/content_patch_431.js \
                 .release-450/runtime_patch_432.js \
@@ -56,6 +55,11 @@ jobs:
           v4.5.0 uses one unified watcher engine, persistent runtime, soft VTO refresh,
           verified live-offer actions, improved diagnostics, and a responsive GUI.
           TXT
+
+          node --check .release-450/vto_engine_450.js
+          node --check .release-450/popup.js
+          node --check .release-450/background_427.js
+          node --check .release-450/license_guard.js
 
           python - <<'PY'
           import json
