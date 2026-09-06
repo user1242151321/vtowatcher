@@ -1,7 +1,7 @@
 {
-  "latestVersion": "4.5.0",
+  "latestVersion": "4.5.2",
   "minimumVersion": "4.0.0",
-  "message": "V4.5.0 replaces the patch stack with one unified watcher engine and clean background service, improves diagnostics and refresh safety, and polishes the responsive GUI.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.0.zip",
-  "sha256": "86dd23e8bde8219d80269a7c960926cd3894ce60bc2cf3fa7b9075603284af07"
+  "message": "V4.5.2 restores the desktop watcher proportions, polishes every extension popup state, keeps safe Amazon session continuation, and refreshes the website design.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.2.zip",
+  "sha256": "d56663081ab9c6f91993083d12b5bf18c17070ec958fa34dd9dca2c49b2bd6c4"
 }

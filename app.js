@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.5.0";
-const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.0.zip";
+const FALLBACK_VERSION = "4.5.2";
+const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.2.zip";
 const FALLBACK_SHA = "";
 
 const menuButton = document.getElementById("menuButton");
@@ -35,7 +35,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "One unified watcher engine replaces the old patch stack, with persistent runtime, safer soft refresh, verified offer actions, stronger diagnostics, responsive sizing, and clearer status colors.";
+  if (copy) copy.textContent = "V4.5.2 restores the desktop watcher proportions, polishes every extension popup state, keeps safe Amazon session continuation, and refreshes the website design.";
 }
 function setReleaseUI(version, downloadUrl, message, sha256, live = true) {
   const actualVersion = version || FALLBACK_VERSION;
