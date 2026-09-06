@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
 const FALLBACK_VERSION = "4.4.4";
-const FALLBACK_DOWNLOAD = "https://vtowatcher.pages.dev/download-4.4.4.html";
+const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.4.4.zip";
 
 const menuButton = document.getElementById("menuButton");
 const navLinks = document.getElementById("navLinks");
@@ -45,7 +45,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "The remaining popup corner seam is removed by making the popup background and rounded shell one continuous surface, with only one mint 30px outline drawn on top.";
+  if (copy) copy.textContent = "The popup corner seam is removed with one continuous rounded surface, and the website now serves a verified prebuilt GitHub ZIP directly.";
 }
 
 function setReleaseUI(version, downloadUrl, message, live = true) {
