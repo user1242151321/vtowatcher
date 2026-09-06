@@ -1,0 +1,62 @@
+/* VTO Watcher 4.6.0 — website quality pass */
+:root{
+  --green:#62f3b8;
+  --green-2:#2bdc93;
+  --bg:#06111f;
+  --panel-solid:#0d1d31;
+}
+::selection{background:rgba(98,243,184,.22);color:#fff}
+a:focus-visible,button:focus-visible,summary:focus-visible{
+  outline:2px solid rgba(98,243,184,.78);
+  outline-offset:3px;
+}
+.site-header{background:rgba(6,17,31,.76)}
+.site-header.scrolled{background:rgba(6,17,31,.94);border-color:rgba(98,243,184,.10)}
+.brand-mark{border-radius:12px;border-color:rgba(98,243,184,.24);box-shadow:0 8px 24px rgba(98,243,184,.06),inset 0 1px 0 rgba(255,255,255,.06)}
+.nav-cta,.button.primary{
+  background:linear-gradient(180deg,#76fac6,var(--green-2));
+  border-radius:14px;
+  box-shadow:0 14px 38px rgba(98,243,184,.13),inset 0 1px 0 rgba(255,255,255,.25);
+}
+.button.ghost{border-radius:14px}
+.browser-card{border-radius:24px;border-color:rgba(98,243,184,.11);box-shadow:0 34px 90px rgba(0,0,0,.38),0 0 0 1px rgba(98,243,184,.025)}
+.watcher-panel{border-radius:20px;border-color:rgba(98,243,184,.19);background:linear-gradient(180deg,rgba(10,29,49,.985),rgba(5,17,30,.985))}
+.health-preview{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:5px;
+  margin:9px 0 0;
+}
+.health-preview span{
+  min-width:0;
+  padding:6px 7px;
+  border:1px solid rgba(255,255,255,.055);
+  border-radius:9px;
+  color:#6f869d;
+  background:rgba(255,255,255,.025);
+  font-size:6.5px;
+  font-weight:700;
+}
+.health-preview b{display:block;margin-top:2px;color:#73efbd;font-size:7px;white-space:nowrap}
+.trust-strip{border-radius:18px;overflow:hidden}
+.feature-card,.security-card{
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(18,38,62,.66),rgba(8,22,39,.72));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+.feature-card:hover,.security-card:hover{border-color:rgba(98,243,184,.20)}
+.feature-icon,.security-card .security-mark{border-radius:12px}
+.download-wrap{
+  border-radius:26px;
+  border:1px solid rgba(98,243,184,.13);
+  background:
+    radial-gradient(circle at 0% 0%,rgba(98,243,184,.08),transparent 34%),
+    linear-gradient(145deg,rgba(15,32,54,.92),rgba(7,20,36,.94));
+  box-shadow:0 28px 80px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.025);
+}
+.install-card,.faq-item,.timeline-content{border-radius:18px}
+.checksum-row{border-radius:15px}
+.release-badge.current{border-radius:999px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+}
