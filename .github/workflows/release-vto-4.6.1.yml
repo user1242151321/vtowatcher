@@ -1,0 +1,86 @@
+name: Release VTO Watcher 4.6.1 rollback
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-vto-4.6.1.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore website to proven 4.5.2 layout
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          s=s.replace('  <link rel="stylesheet" href="site_452.css">\\n  <link rel="stylesheet" href="site_460.css">','  <link rel="stylesheet" href="site_452.css">')
+          s=s.replace('  <link rel="stylesheet" href="site_452.css">\n  <link rel="stylesheet" href="site_460.css">','  <link rel="stylesheet" href="site_452.css">')
+          s=s.replace('<div class="health-preview"><span>Page<b>VTO page</b></span><span>Session<b>Healthy</b></span><span>Scan<b>OK now</b></span></div>','')
+          s=s.replace('Live health monitoring','Local browser settings')
+          s=s.replace('<h3>Health + diagnostics</h3><p>Live page, session, and scan health sits beside detailed diagnostics for refresh, offer detection, confirmation, and acceptance troubleshooting.</p>','<h3>Detailed diagnostics</h3><p>Copy Diagnostics records refresh, offer detection, button recognition, confirmation, and acceptance verification steps.</p>')
+          s=s.replace('V4.6</span>','V4.5</span>')
+          s=s.replace('v4.6.0','v4.6.1')
+          s=s.replace('VTO_Watcher_4.6.0.zip','VTO_Watcher_4.6.1.zip')
+          s=s.replace('<h3>Version 4.6.0</h3><span>Current</span></div><p>Adds live page/session/scan health, duplicate-action protection, clearer recovery visibility, stronger popup status reporting, and a refined website experience.</p>','<h3>Version 4.6.1</h3><span>Current</span></div><p>Rollback hotfix: restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.</p>')
+          p.write_text(s)
+
+          p=Path('app.js')
+          s=p.read_text()
+          s=s.replace('const FALLBACK_VERSION = "4.6.0";','const FALLBACK_VERSION = "4.6.1";')
+          s=s.replace('VTO_Watcher_4.6.0.zip','VTO_Watcher_4.6.1.zip')
+          s=s.replace('V4.6.0 adds live page/session/scan health, duplicate-action protection, clearer recovery visibility, stronger popup status reporting, and a refined website experience.','V4.6.1 rollback hotfix restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.')
+          p.write_text(s)
+          PY
+          ! grep -q 'site_460.css' index.html
+          ! grep -q 'health-preview' index.html
+
+      - name: Build rollback ZIP from proven 4.5.2 package
+        run: |
+          set -euo pipefail
+          rm -rf .release-461
+          mkdir .release-461
+          unzip -q updates/VTO_Watcher_4.5.2.zip -d .release-461
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('.release-461/manifest.json')
+          m=json.loads(p.read_text())
+          m['version']='4.6.1'
+          m['description']='VTO Watcher v4.6.1 rollback hotfix restores the proven 4.5.2 UI and watcher behavior while keeping safe Amazon session continuation, persistent runtime, diagnostics, GitHub updates, and Cloudflare licensing.'
+          assert m['content_scripts'][0]['js']==['license_guard.js','vto_engine_450.js']
+          assert m['content_scripts'][0]['css']==['content.css','content_450.css']
+          p.write_text(json.dumps(m,indent=2)+'\n')
+          PY
+          rm -f updates/VTO_Watcher_4.6.1.zip
+          (cd .release-461 && zip -qr ../updates/VTO_Watcher_4.6.1.zip .)
+          unzip -tq updates/VTO_Watcher_4.6.1.zip
+          SHA="$(sha256sum updates/VTO_Watcher_4.6.1.zip | awk '{print $1}')"
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.6.1",
+            "minimumVersion": "4.0.0",
+            "message": "V4.6.1 rollback hotfix restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.1.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.6.1.zip" > updates/VTO_Watcher_4.6.1.sha256
+          rm -rf .release-461
+
+      - name: Commit rollback
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html app.js updates/latest.json updates/VTO_Watcher_4.6.1.zip updates/VTO_Watcher_4.6.1.sha256
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish VTO Watcher 4.6.1 rollback hotfix"
+          git push
