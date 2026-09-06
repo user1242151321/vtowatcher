@@ -5,7 +5,7 @@
   "description": "VTO Watcher v4.5.0 uses one unified watcher engine with persistent runtime, soft VTO refresh, verified offer actions, stronger diagnostics, responsive UI, GitHub updates, and Cloudflare licensing.",
   "permissions": ["notifications","storage","tabs"],
   "host_permissions": ["https://atoz.amazon.work/*","https://vto-license-server.vto-license-ks.workers.dev/*","https://raw.githubusercontent.com/*"],
-  "background": {"service_worker": "background_427.js"},
+  "background": {"service_worker": "background_450.js"},
   "action": {"default_title": "VTO Watcher","default_popup": "popup.html"},
   "content_scripts": [{"matches":["https://atoz.amazon.work/*"],"js":["license_guard.js","vto_engine_450.js"],"css":["content.css","content_450.css"],"run_at":"document_idle"}],
   "icons": {"16":"icons/icon16.png","48":"icons/icon48.png","128":"icons/icon128.png"}
