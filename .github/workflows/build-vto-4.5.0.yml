@@ -32,6 +32,7 @@ jobs:
                 .release-450/reload_guard_429.js \
                 .release-450/click_guard_434.js \
                 .release-450/accept_patch_434.js \
+                .release-450/background_427.js \
                 .release-450/README_4.4.4.txt \
                 .release-450/README_GUI_REFRESH.txt
 
@@ -40,6 +41,7 @@ jobs:
           cp updates/4.5.0/popup_450.css .release-450/popup_450.css
           cp updates/4.5.0/popup.html .release-450/popup.html
           cp updates/4.5.0/popup.js .release-450/popup.js
+          cp updates/4.5.0/background_450.js .release-450/background_450.js
           cp updates/4.5.0/manifest.json .release-450/manifest.json
 
           cat > .release-450/README.txt <<'TXT'
@@ -52,26 +54,31 @@ jobs:
           4. Choose Load unpacked and select this extracted folder.
           5. Activate with a valid VTO Watcher license.
 
-          v4.5.0 uses one unified watcher engine, persistent runtime, soft VTO refresh,
-          verified live-offer actions, improved diagnostics, and a responsive GUI.
+          v4.5.0 uses one unified watcher engine and one clean background service,
+          persistent runtime, soft VTO refresh, verified live-offer actions,
+          improved diagnostics, GitHub updates, and a responsive GUI.
           TXT
 
           node --check .release-450/vto_engine_450.js
           node --check .release-450/popup.js
-          node --check .release-450/background_427.js
+          node --check .release-450/background_450.js
           node --check .release-450/license_guard.js
 
           python - <<'PY'
           import json
           from pathlib import Path
-          p=Path('.release-450/manifest.json')
-          m=json.loads(p.read_text())
+          root=Path('.release-450')
+          m=json.loads((root/'manifest.json').read_text())
           assert m['version']=='4.5.0'
+          assert m['background']['service_worker']=='background_450.js'
           scripts=m['content_scripts'][0]['js']
           assert scripts==['license_guard.js','vto_engine_450.js'], scripts
-          required=['license_guard.js','vto_engine_450.js','content.css','content_450.css','popup.css','popup_450.css','popup.html','popup.js','background_427.js','license_config.js']
-          missing=[x for x in required if not (Path('.release-450')/x).exists()]
+          required=['license_guard.js','vto_engine_450.js','content.css','content_450.css','popup.css','popup_450.css','popup.html','popup.js','background_450.js','license_config.js']
+          missing=[x for x in required if not (root/x).exists()]
           assert not missing, missing
+          obsolete=['content_patch_431.js','runtime_patch_432.js','runtime_guard_433.js','reload_guard_429.js','click_guard_434.js','accept_patch_434.js','background_427.js']
+          present=[x for x in obsolete if (root/x).exists()]
+          assert not present, present
           PY
 
           rm -f updates/VTO_Watcher_4.5.0.zip
@@ -87,7 +94,7 @@ jobs:
           {
             "latestVersion": "4.5.0",
             "minimumVersion": "4.0.0",
-            "message": "V4.5.0 replaces the patch stack with one unified watcher engine, improves diagnostics and refresh safety, and polishes the responsive GUI.",
+            "message": "V4.5.0 replaces the patch stack with one unified watcher engine and clean background service, improves diagnostics and refresh safety, and polishes the responsive GUI.",
             "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.0.zip",
             "sha256": "$SHA"
           }
@@ -104,5 +111,5 @@ jobs:
             echo "Release already up to date."
             exit 0
           fi
-          git commit -m "Publish VTO Watcher 4.5.0"
+          git commit -m "Publish final VTO Watcher 4.5.0 package"
           git push
