@@ -1,0 +1,104 @@
+name: Build VTO Watcher 4.5.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-vto-4.5.0.yml'
+      - 'updates/4.5.0/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build clean 4.5.0 ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .release-450
+          mkdir -p .release-450
+          unzip -q updates/VTO_Watcher_4.4.4.zip -d .release-450
+
+          # Remove the old patch stack. v4.5.0 loads one watcher engine only.
+          rm -f .release-450/content.js \
+                .release-450/content_patch_431.js \
+                .release-450/runtime_patch_432.js \
+                .release-450/runtime_guard_433.js \
+                .release-450/reload_guard_429.js \
+                .release-450/click_guard_434.js \
+                .release-450/accept_patch_434.js \
+                .release-450/README_4.4.4.txt \
+                .release-450/README_GUI_REFRESH.txt
+
+          cp updates/4.5.0/vto_engine_450.js .release-450/vto_engine_450.js
+          cp updates/4.5.0/content_450.css .release-450/content_450.css
+          cp updates/4.5.0/popup_450.css .release-450/popup_450.css
+          cp updates/4.5.0/popup.html .release-450/popup.html
+          cp updates/4.5.0/popup.js .release-450/popup.js
+          cp updates/4.5.0/manifest.json .release-450/manifest.json
+
+          cat > .release-450/README.txt <<'TXT'
+          VTO Watcher 4.5.0
+
+          Install:
+          1. Extract this ZIP to a permanent folder.
+          2. Open chrome://extensions.
+          3. Enable Developer mode.
+          4. Choose Load unpacked and select this extracted folder.
+          5. Activate with a valid VTO Watcher license.
+
+          v4.5.0 uses one unified watcher engine, persistent runtime, soft VTO refresh,
+          verified live-offer actions, improved diagnostics, and a responsive GUI.
+          TXT
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('.release-450/manifest.json')
+          m=json.loads(p.read_text())
+          assert m['version']=='4.5.0'
+          scripts=m['content_scripts'][0]['js']
+          assert scripts==['license_guard.js','vto_engine_450.js'], scripts
+          required=['license_guard.js','vto_engine_450.js','content.css','content_450.css','popup.css','popup_450.css','popup.html','popup.js','background_427.js','license_config.js']
+          missing=[x for x in required if not (Path('.release-450')/x).exists()]
+          assert not missing, missing
+          PY
+
+          rm -f updates/VTO_Watcher_4.5.0.zip
+          (cd .release-450 && zip -qr ../updates/VTO_Watcher_4.5.0.zip .)
+          unzip -tq updates/VTO_Watcher_4.5.0.zip
+          rm -rf .release-450
+
+      - name: Publish feed and checksum
+        shell: bash
+        run: |
+          SHA="$(sha256sum updates/VTO_Watcher_4.5.0.zip | awk '{print $1}')"
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.5.0",
+            "minimumVersion": "4.0.0",
+            "message": "V4.5.0 replaces the patch stack with one unified watcher engine, improves diagnostics and refresh safety, and polishes the responsive GUI.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.0.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.5.0.zip" > updates/VTO_Watcher_4.5.0.sha256
+
+      - name: Commit release
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/VTO_Watcher_4.5.0.zip updates/VTO_Watcher_4.5.0.sha256 updates/latest.json
+          if git diff --cached --quiet; then
+            echo "Release already up to date."
+            exit 0
+          fi
+          git commit -m "Publish VTO Watcher 4.5.0"
+          git push
