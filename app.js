@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.6.0";
-const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.0.zip";
+const FALLBACK_VERSION = "4.6.1";
+const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.1.zip";
 const FALLBACK_SHA = "";
 
 const menuButton = document.getElementById("menuButton");
@@ -35,7 +35,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "V4.6.0 adds live page/session/scan health, duplicate-action protection, clearer recovery visibility, stronger popup status reporting, and a refined website experience.";
+  if (copy) copy.textContent = "V4.6.1 rollback hotfix restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.";
 }
 function setReleaseUI(version, downloadUrl, message, sha256, live = true) {
   const actualVersion = version || FALLBACK_VERSION;

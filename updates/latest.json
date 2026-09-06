@@ -1,7 +1,7 @@
 {
-  "latestVersion": "4.6.0",
+  "latestVersion": "4.6.1",
   "minimumVersion": "4.0.0",
-  "message": "V4.6.0 adds live page/session/scan health, duplicate-action protection, clearer recovery visibility, stronger popup status reporting, and a refined website experience.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.0.zip",
-  "sha256": "4a5d80f60fe158d36c7fe3d8657fa615c035a621e271371a7e12c9a3af4704c3"
+  "message": "V4.6.1 rollback hotfix restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.1.zip",
+  "sha256": "72d979aac66ee08914fefb7b953e1d2a098a8e68dbbf0b376728745236085630"
 }
