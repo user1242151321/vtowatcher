@@ -1,0 +1,32 @@
+name: Clean obsolete VTO downloads
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cleanup-obsolete-downloads.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove obsolete browser builders and broken legacy ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f download-4.*.html
+          rm -f updates/VTO_Watcher_4.2.5.zip updates/VTO_Watcher_4.2.6.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing obsolete remains."
+            exit 0
+          fi
+          git commit -m "Remove obsolete download builders and broken legacy ZIPs"
+          git push
