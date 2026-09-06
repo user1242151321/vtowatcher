@@ -25,7 +25,7 @@
   const duration = ms => { const t=Math.max(0,Math.floor(ms/1000)); return `${String(Math.floor(t/3600)).padStart(2,"0")}:${String(Math.floor((t%3600)/60)).padStart(2,"0")}:${String(t%60).padStart(2,"0")}`; };
 
   let state={...DEFAULTS}, panel, ui={}, logs=[], stats={checks:0,refreshes:0,found:0,old:0,errors:0};
-  let scanning=false, acting=false, refreshing=false, nextRefreshAt=0, refreshHoldUntil=0, lastActionAt=0, lastNoticeAt=0, pendingActionAt=0;
+  let scanning=false, acting=false, refreshing=false, nextRefreshAt=0, refreshHoldUntil=0, lastActionAt=0, lastNoticeAt=0, pendingActionAt=0, pendingStage="", lastOfferSignature="";
   let originalTitle=document.title, flashTimer=null, observerTimer=null;
 
   async function save(patch){ state={...state,...patch}; await chrome.storage.local.set(patch); }
@@ -80,7 +80,7 @@
     log(stage,"button="+textOf(el));
     if(state.testMode){setStatus(`TEST MODE — would ${stage}`,"warning");return false;}
     acting=true;
-    try{ el.setAttribute("data-vto-engine-action","1"); el.scrollIntoView({block:"center",behavior:"auto"}); await sleep(120); el.click(); pendingActionAt=Date.now(); await sleep(650); return true; }
+    try{ el.setAttribute("data-vto-engine-action","1"); el.scrollIntoView({block:"center",behavior:"auto"}); await sleep(120); el.click(); pendingActionAt=Date.now(); pendingStage=stage; await sleep(650); return true; }
     catch(e){stats.errors++;log("CLICK ERROR",e?.message||e);setStatus("Action click failed","error");return false;}
     finally{try{el.removeAttribute("data-vto-engine-action");}catch(_){}acting=false;renderStats();}
   }
@@ -93,13 +93,15 @@
       if(isPageError()){stats.errors++;setStatus("A to Z page error","error");log("PAGE ERROR","A to Z reported an error");renderStats();return;}
       if(!isVtoContext()){setStatus("Open Schedule → VTO","warning");if(ui.offer)ui.offer.textContent="No eligible VTO currently detected.";return;}
       if(state.acceptedThisArm>=Number(state.maxAcceptsPerArm||1)){await disarm("Maximum VTO accepted");return;}
-      if(successDetected()&&pendingActionAt){ const accepted=state.acceptedThisArm+1; await save({acceptedThisArm:accepted}); log("ACCEPT VERIFIED","Fresh success message detected"); setStatus("VTO ACCEPTED!","success");notify("VTO ACCEPTED","Your VTO appears to have been accepted.");beep(1050,.12);setTimeout(()=>beep(1280,.15),150);setTimeout(()=>disarm("VTO accepted"),700);return; }
+      if(successDetected()&&pendingActionAt&&pendingStage==="CONFIRM CLICK"){ const accepted=state.acceptedThisArm+1; await save({acceptedThisArm:accepted}); log("ACCEPT VERIFIED","Fresh success message detected"); setStatus("VTO ACCEPTED!","success");notify("VTO ACCEPTED","Your VTO appears to have been accepted.");beep(1050,.12);setTimeout(()=>beep(1280,.15),150);setTimeout(()=>disarm("VTO accepted"),700);return; }
+      if(pendingStage==="CONFIRM CLICK"&&pendingActionAt&&Date.now()-pendingActionAt<5000){setStatus("Verifying VTO acceptance…","found");return;}
       const confirm=confirmButton();
       if(confirm){ log("CONFIRM DETECTED",`autoConfirm=${state.autoConfirm} testMode=${state.testMode}`); if(state.testMode){setStatus("TEST MODE — confirmation detected","warning");return;} if(!state.autoConfirm){setStatus("VTO ready — Auto Confirm OFF","found");notify("VTO READY","Final VTO confirmation is waiting.");return;} setStatus("Confirming VTO…","found"); await clickVerified(confirm,"CONFIRM CLICK"); return; }
+      if(pendingStage==="OFFER ACTION"&&pendingActionAt&&Date.now()-pendingActionAt<5000){setStatus("Waiting for VTO offer…","found");return;}
       const list=eligible(), best=list[0]||null; if(ui.offer)ui.offer.textContent=describe(best);
       const old=offers().filter(o=>o.unavailable).length;
-      if(!best){ if(old){stats.old=Math.max(stats.old,old);setStatus(`Watching — ${old} filled/old`,"armed");}else setStatus("Watching for VTO","armed");renderStats();return; }
-      stats.found++; renderStats(); alertFound(best); log("OFFER FOUND",describe(best));
+      if(!best){ lastOfferSignature=""; if(old){stats.old=Math.max(stats.old,old);setStatus(`Watching — ${old} filled/old`,"armed");}else setStatus("Watching for VTO","armed");renderStats();return; }
+      const signature=describe(best); if(signature!==lastOfferSignature){lastOfferSignature=signature;stats.found++;renderStats();alertFound(best);log("OFFER FOUND",signature);}
       const action=actionFor(best.card);
       if(!action){setStatus("VTO FOUND — action not recognized","warning");log("ACTION MISSING","No verified button found inside eligible offer card");return;}
       setStatus("VTO FOUND — opening offer…","found"); await clickVerified(action.el,"OFFER ACTION");
@@ -124,8 +126,8 @@
   }
   function blankGuard(){ if(!state.armed||state.paused||document.readyState!=="complete")return;const main=document.querySelector("main,[role='main']");if(!main)return;const r=main.getBoundingClientRect(),t=norm(main.innerText||main.textContent||"");if(r.height>=180&&t.length<25){refreshHoldUntil=Date.now()+60000;nextRefreshAt=refreshHoldUntil;setStatus("A to Z content blank — auto refresh paused","warning");log("BLANK GUARD","Refresh paused for 60s; no forced page reload");} }
 
-  async function arm(){ const lic=await window.VTOLicense.requireValid(true);if(!lic?.valid){setStatus("License inactive","error");log("ARM BLOCKED","License inactive");return;} stats={checks:0,refreshes:0,found:0,old:0,errors:0};logs=[];pendingActionAt=0;const started=Date.now();await save({armed:true,paused:false,acceptedThisArm:0,armedStartedAt:started});nextRefreshAt=started+Math.max(5,Number(state.refreshSeconds)||5)*1000;setStatus("ARMED — watching","armed");log("ARMED",`v${VERSION}`);beep(650,.08);renderAll();scan(); }
-  async function disarm(reason="Disarmed"){stopFlash();await save({armed:false,paused:false,armedStartedAt:0});nextRefreshAt=0;refreshHoldUntil=0;setStatus(reason,"off");log("DISARMED",reason);renderAll();}
+  async function arm(){ const lic=await window.VTOLicense.requireValid(true);if(!lic?.valid){setStatus("License inactive","error");log("ARM BLOCKED","License inactive");return;} stats={checks:0,refreshes:0,found:0,old:0,errors:0};logs=[];pendingActionAt=0;pendingStage="";lastOfferSignature="";const started=Date.now();await save({armed:true,paused:false,acceptedThisArm:0,armedStartedAt:started});nextRefreshAt=started+Math.max(5,Number(state.refreshSeconds)||5)*1000;setStatus("ARMED — watching","armed");log("ARMED",`v${VERSION}`);beep(650,.08);renderAll();scan(); }
+  async function disarm(reason="Disarmed"){pendingActionAt=0;pendingStage="";lastOfferSignature="";stopFlash();await save({armed:false,paused:false,armedStartedAt:0});nextRefreshAt=0;refreshHoldUntil=0;setStatus(reason,"off");log("DISARMED",reason);renderAll();}
   async function togglePause(){if(!state.armed)return;await save({paused:!state.paused});if(state.paused){setStatus("PAUSED","warning");log("PAUSED");}else{nextRefreshAt=Date.now()+Math.max(5,Number(state.refreshSeconds)||5)*1000;setStatus("ARMED — watching","armed");log("RESUMED");scan();}renderAll();}
 
   function renderStats(){if(ui.stats)ui.stats.textContent=`Checks ${stats.checks} • Refreshes ${stats.refreshes} • Found ${stats.found} • Old ${stats.old} • Errors ${stats.errors} • Accepted ${state.acceptedThisArm}/1`;}
