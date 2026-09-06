@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "VTO Watcher",
+  "version": "4.6.0",
+  "description": "VTO Watcher v4.6.0 adds live health status, duplicate-action protection, safer recovery visibility, polished popup diagnostics, persistent runtime, safe Amazon session continuation, GitHub updates, and Cloudflare licensing.",
+  "permissions": [
+    "notifications",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://atoz.amazon.work/*",
+    "https://vto-license-server.vto-license-ks.workers.dev/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background_450.js"
+  },
+  "action": {
+    "default_title": "VTO Watcher",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://atoz.amazon.work/*"
+      ],
+      "js": [
+        "license_guard.js",
+        "vto_engine_450.js",
+        "health_460.js"
+      ],
+      "css": [
+        "content.css",
+        "content_450.css",
+        "content_460.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
