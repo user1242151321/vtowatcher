@@ -1,0 +1,98 @@
+name: Release VTO Watcher 4.6.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-vto-4.6.0.yml'
+      - 'updates/4.6.0/**'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build 4.6.0 extension ZIP
+        run: |
+          set -euo pipefail
+          rm -rf .release-460
+          mkdir -p .release-460
+          unzip -q updates/VTO_Watcher_4.5.2.zip -d .release-460
+
+          cp updates/4.6.0/manifest.json .release-460/manifest.json
+          cp updates/4.6.0/popup.html .release-460/popup.html
+          cp updates/4.6.0/popup.js .release-460/popup.js
+          cp updates/4.6.0/content_460.css .release-460/content_460.css
+          cp updates/4.6.0/popup_460.css .release-460/popup_460.css
+          cp updates/4.6.0/health_460.js .release-460/health_460.js
+
+          node --check .release-460/health_460.js
+          node --check .release-460/popup.js
+          node --check .release-460/vto_engine_450.js
+          node --check .release-460/background_450.js
+          node --check .release-460/license_guard.js
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=Path('.release-460')
+          m=json.loads((r/'manifest.json').read_text())
+          assert m['version']=='4.6.0'
+          assert m['content_scripts'][0]['js']==['license_guard.js','vto_engine_450.js','health_460.js']
+          assert m['content_scripts'][0]['css']==['content.css','content_450.css','content_460.css']
+          html=(r/'popup.html').read_text()
+          assert 'popup_460.css' in html
+          for f in ['health_460.js','content_460.css','popup_460.css','popup.js','popup.html','manifest.json']:
+              assert (r/f).exists() and (r/f).stat().st_size>0, f
+          PY
+
+          rm -f updates/VTO_Watcher_4.6.0.zip
+          (cd .release-460 && zip -qr ../updates/VTO_Watcher_4.6.0.zip .)
+          unzip -tq updates/VTO_Watcher_4.6.0.zip
+
+          SHA="$(sha256sum updates/VTO_Watcher_4.6.0.zip | awk '{print $1}')"
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.6.0",
+            "minimumVersion": "4.0.0",
+            "message": "V4.6.0 adds live page/session/scan health, duplicate-action protection, clearer recovery visibility, stronger popup status reporting, and a refined website experience.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.0.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.6.0.zip" > updates/VTO_Watcher_4.6.0.sha256
+          rm -rf .release-460
+
+      - name: Update website fallback
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('app.js')
+          s=p.read_text()
+          s=s.replace('const FALLBACK_VERSION = "4.5.2";','const FALLBACK_VERSION = "4.6.0";')
+          s=s.replace('VTO_Watcher_4.5.2.zip','VTO_Watcher_4.6.0.zip')
+          s=s.replace('V4.5.2 restores the desktop watcher proportions, polishes every extension popup state, keeps safe Amazon session continuation, and refreshes the website design.','V4.6.0 adds live page/session/scan health, duplicate-action protection, clearer recovery visibility, stronger popup status reporting, and a refined website experience.')
+          p.write_text(s)
+
+          p=Path('index.html')
+          s=p.read_text()
+          s=s.replace('VTO_Watcher_4.5.2.zip','VTO_Watcher_4.6.0.zip')
+          p.write_text(s)
+          PY
+          grep -q 'site_460.css' index.html
+          grep -q '4.6.0' app.js
+          test -s site_460.css
+
+      - name: Commit 4.6.0 release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js index.html updates/latest.json updates/VTO_Watcher_4.6.0.zip updates/VTO_Watcher_4.6.0.sha256
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish VTO Watcher 4.6.0"
+          git push
