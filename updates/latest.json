@@ -1,6 +1,7 @@
 {
-  "latestVersion": "4.4.4",
+  "latestVersion": "4.5.0",
   "minimumVersion": "4.0.0",
-  "message": "V4.4.4 fixes the remaining popup corner seam and now downloads as a direct prebuilt GitHub ZIP.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.4.4.zip"
+  "message": "V4.5.0 replaces the patch stack with one unified watcher engine, improves diagnostics and refresh safety, and polishes the responsive GUI.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.0.zip",
+  "sha256": "02de8310753f00378bea5f175923f9f63eee51f6da260a3241a7ce5cd420ee34"
 }
