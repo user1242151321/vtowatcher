@@ -1,0 +1,91 @@
+name: Build VTO Watcher 4.4.4
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-vto-4.4.4.yml'
+      - 'updates/4.2.7/background_427.js'
+      - 'updates/4.2.9/reload_guard_429.js'
+      - 'updates/4.3.1/content_patch_431.js'
+      - 'updates/4.3.2/runtime_patch_432.js'
+      - 'updates/4.3.3/runtime_guard_433.js'
+      - 'updates/4.3.4/click_guard_434.js'
+      - 'updates/4.3.4/accept_patch_434.js'
+      - 'updates/4.4.1/content.css'
+      - 'updates/4.4.4/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble extension
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .release-444
+          mkdir -p .release-444
+          unzip -q updates/VTO_Watcher_4.2.6.zip -d .release-444
+
+          cp updates/4.2.7/background_427.js .release-444/background_427.js
+          cp updates/4.2.9/reload_guard_429.js .release-444/reload_guard_429.js
+          cp updates/4.3.1/content_patch_431.js .release-444/content_patch_431.js
+          cp updates/4.3.2/runtime_patch_432.js .release-444/runtime_patch_432.js
+          cp updates/4.3.3/runtime_guard_433.js .release-444/runtime_guard_433.js
+          cp updates/4.3.4/click_guard_434.js .release-444/click_guard_434.js
+          cp updates/4.3.4/accept_patch_434.js .release-444/accept_patch_434.js
+          cp updates/4.4.1/content.css .release-444/content.css
+          cp updates/4.4.4/popup.css .release-444/popup.css
+          cp updates/4.4.4/popup.html .release-444/popup.html
+          cp updates/4.4.4/manifest.json .release-444/manifest.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('.release-444/manifest.json')
+          data = json.loads(p.read_text())
+          assert data['version'] == '4.4.4', data['version']
+          required = {
+              'background_427.js','reload_guard_429.js','runtime_guard_433.js',
+              'click_guard_434.js','content_patch_431.js','runtime_patch_432.js',
+              'accept_patch_434.js','content.css','popup.css','popup.html'
+          }
+          missing = [x for x in required if not (Path('.release-444') / x).exists()]
+          assert not missing, missing
+          PY
+
+          rm -f updates/VTO_Watcher_4.4.4.zip
+          (cd .release-444 && zip -qr ../updates/VTO_Watcher_4.4.4.zip .)
+          unzip -tq updates/VTO_Watcher_4.4.4.zip
+          rm -rf .release-444
+
+      - name: Point release feed at the static ZIP
+        shell: bash
+        run: |
+          cat > updates/latest.json <<'JSON'
+          {
+            "latestVersion": "4.4.4",
+            "minimumVersion": "4.0.0",
+            "message": "V4.4.4 fixes the remaining popup corner seam and now downloads as a direct prebuilt GitHub ZIP.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.4.4.zip"
+          }
+          JSON
+
+      - name: Commit release ZIP
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/VTO_Watcher_4.4.4.zip updates/latest.json
+          if git diff --cached --quiet; then
+            echo "Release already up to date."
+            exit 0
+          fi
+          git commit -m "Publish static VTO Watcher 4.4.4 ZIP"
+          git push
