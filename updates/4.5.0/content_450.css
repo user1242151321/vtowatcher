@@ -1,0 +1,35 @@
+/* VTO Watcher 4.5.0 final UI layer */
+#vto-v4-panel{
+  width:min(392px,calc(100vw - 24px));
+  max-height:min(86vh,820px);
+  border:1px solid rgba(91,242,181,.24)!important;
+  border-radius:30px!important;
+  box-shadow:0 30px 88px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+#vto-v4-panel .vto-v4-badge::after{content:"V4.5"!important;font-size:8px!important;letter-spacing:.05em}
+#vto-v4-panel .vto-status{background:linear-gradient(90deg,rgba(31,45,66,.92),rgba(20,34,52,.88))!important;border-color:rgba(160,190,230,.10)!important;color:#e7effa!important;transition:background .18s ease,border-color .18s ease,color .18s ease}
+#vto-v4-panel .vto-status::before{background:#8ca1bd!important;box-shadow:0 0 0 6px rgba(140,161,189,.07)!important}
+#vto-v4-panel .vto-status[data-state="armed"],#vto-v4-panel .vto-status[data-state="success"]{background:linear-gradient(90deg,rgba(12,94,70,.88),rgba(13,61,69,.82))!important;border-color:rgba(91,242,181,.16)!important;color:#d8ffef!important}
+#vto-v4-panel .vto-status[data-state="armed"]::before,#vto-v4-panel .vto-status[data-state="success"]::before{background:#5bf2b5!important;box-shadow:0 0 0 6px rgba(91,242,181,.08),0 0 15px rgba(91,242,181,.32)!important}
+#vto-v4-panel .vto-status[data-state="found"],#vto-v4-panel .vto-status[data-state="warning"]{background:linear-gradient(90deg,rgba(146,64,14,.92),rgba(105,54,20,.88))!important;border-color:rgba(251,146,60,.20)!important;color:#fff4e8!important}
+#vto-v4-panel .vto-status[data-state="found"]::before,#vto-v4-panel .vto-status[data-state="warning"]::before{background:#fb923c!important;box-shadow:0 0 0 6px rgba(251,146,60,.08),0 0 15px rgba(251,146,60,.28)!important}
+#vto-v4-panel .vto-status[data-state="error"]{background:linear-gradient(90deg,rgba(132,35,46,.94),rgba(91,29,40,.88))!important;border-color:rgba(255,100,117,.22)!important;color:#ffe9ec!important}
+#vto-v4-panel .vto-status[data-state="error"]::before{background:#ff6475!important;box-shadow:0 0 0 6px rgba(255,100,117,.08),0 0 15px rgba(255,100,117,.25)!important}
+#vto-v4-panel .vto-section-title{font-size:9.5px!important;color:#9aafca!important}
+#vto-v4-panel label{font-size:9.5px!important;color:#91a6c0!important}
+#vto-v4-panel .vto-card{font-size:10px!important;min-height:70px!important}
+#vto-v4-panel .vto-card strong{font-size:13.5px!important}
+#vto-v4-panel .vto-toggle,#vto-v4-panel .vto-secondary{font-size:10px!important;border-radius:17px!important}
+#vto-v4-panel .vto-select,#vto-v4-panel .vto-number{font-size:11px!important;border-radius:17px!important}
+#vto-v4-panel .vto-offer-box{font-size:10.5px!important}
+#vto-v4-panel .vto-controls{margin-top:7px}
+#vto-v4-panel #vto-v4-longest{width:100%;margin-top:7px}
+#vto-v4-panel .vto-main{font-size:11px!important}
+#vto-v4-panel .vto-main::before{content:none!important}
+#vto-v4-panel .vto-log{height:128px!important;font-size:9.5px!important}
+#vto-v4-panel .vto-log-entry{display:grid;grid-template-columns:auto 1fr;gap:4px 7px;padding:6px 1px!important}
+#vto-v4-panel .vto-log-entry b{color:#7188a4;font-weight:700}
+#vto-v4-panel .vto-log-entry span{color:#d9e5f3;font-weight:800}
+#vto-v4-panel .vto-log-entry small{grid-column:1/-1;color:#8197b1;white-space:normal;word-break:break-word}
+#vto-v4-panel .vto-empty{opacity:.55;padding:4px 1px}
+@media(max-width:520px){#vto-v4-panel{right:8px!important;bottom:8px!important;width:calc(100vw - 16px)!important;max-height:calc(100vh - 16px)!important;border-radius:24px!important}#vto-v4-panel .vto-v4-body{max-height:calc(100vh - 82px)!important;padding:12px!important}#vto-v4-panel .vto-grid-2{gap:8px!important}}
