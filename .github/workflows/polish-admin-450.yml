@@ -1,0 +1,43 @@
+name: Polish VTO Watcher admin 4.5.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/polish-admin-450.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update admin feed and polish
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('admin.html')
+          s=p.read_text()
+          s=s.replace('https://raw.githubusercontent.com/user1242151321/test/main/updates/latest.json','https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json')
+          if 'admin_450.css' not in s:
+              s=s.replace('</head>','  <link rel="stylesheet" href="admin_450.css">\n</head>')
+          marker='<section class="admin-dashboard" id="dashboardView">'
+          note='<section class="admin-dashboard" id="dashboardView"><div class="admin-security-note"><strong>Owner API protection:</strong> admin actions require your Cloudflare admin secret and the secret is kept only in this tab. The static page itself remains reachable until Cloudflare Access is enabled for /admin.html.</div>'
+          if marker in s and 'Owner API protection:' not in s:
+              s=s.replace(marker,note)
+          p.write_text(s)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add admin.html
+          if git diff --cached --quiet; then
+            echo "Admin already polished."
+            exit 0
+          fi
+          git commit -m "Polish VTO Watcher 4.5.0 admin console"
+          git push
