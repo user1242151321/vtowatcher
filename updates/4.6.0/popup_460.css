@@ -1,0 +1,52 @@
+/* VTO Watcher 4.6.0 — popup health and interaction polish */
+.system-panel{
+  margin:0 0 14px;
+  padding:12px;
+  border:1px solid var(--x-line);
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(15,34,58,.98),rgba(9,24,42,.98));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.system-title{
+  margin:0 0 9px 2px;
+  color:#8fa7c4;
+  font-size:8.5px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.system-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.system-chip{
+  min-width:0;
+  padding:9px 8px;
+  border:1px solid rgba(151,192,234,.09);
+  border-radius:14px;
+  background:linear-gradient(180deg,#15304f,#10243d);
+}
+.system-chip span{
+  display:block;
+  margin-bottom:5px;
+  color:#758ca9;
+  font-size:8px;
+  font-weight:800;
+}
+.system-chip strong{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#dce8f7;
+  font-size:9px;
+  font-weight:900;
+}
+.system-chip[data-state="good"] strong{color:#67efb9}
+.system-chip[data-state="warn"] strong{color:#f7b56c}
+.system-chip[data-state="bad"] strong{color:#ff7d8b}
+.system-chip[data-state="busy"] strong{color:#9ec3ee}
+.shell,.panel,.detail-cell,.action-dock,.system-panel{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.action-primary:focus-visible,.action-secondary:focus-visible,input:focus-visible{
+  outline:2px solid rgba(99,244,191,.68)!important;
+  outline-offset:2px!important;
+}
+.action-primary:hover:not(:disabled),.action-secondary:hover:not(:disabled){transform:translateY(-1px)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
