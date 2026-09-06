@@ -1,0 +1,152 @@
+name: Release VTO Watcher 4.5.2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-vto-4.5.2.yml'
+      - 'updates/4.5.2/**'
+      - 'site_452.css'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Polish website for 4.5.2
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('index.html')
+          s=p.read_text()
+          if 'site_452.css' not in s:
+              s=s.replace('<link rel="stylesheet" href="site_450.css">','<link rel="stylesheet" href="site_450.css">\n  <link rel="stylesheet" href="site_452.css">')
+          s=s.replace('id="heroVersion">v4.5.0<','id="heroVersion">v4.5.2<')
+          s=s.replace('id="latestVersionBadge">v4.5.0<','id="latestVersionBadge">v4.5.2<')
+          s=s.replace('VTO_Watcher_4.5.0.zip','VTO_Watcher_4.5.2.zip')
+          s=s.replace('<h3>Version 4.5.0</h3><span>Current</span></div><p>Replaced the stacked watcher patches with one unified engine, added detailed diagnostics, persistent runtime, responsive sizing, safer soft refresh, and clearer status colors.</p>', '<h3>Version 4.5.2</h3><span>Current</span></div><p>Restored the desktop watcher proportions, polished every extension popup state, kept safe session continuation, and refreshed the public website visual system.</p>')
+          p.write_text(s)
+
+          p=Path('app.js')
+          s=p.read_text()
+          s=s.replace('const FALLBACK_VERSION = "4.5.0";','const FALLBACK_VERSION = "4.5.2";')
+          s=s.replace('VTO_Watcher_4.5.0.zip','VTO_Watcher_4.5.2.zip')
+          old='One unified watcher engine replaces the old patch stack, with persistent runtime, safer soft refresh, verified offer actions, stronger diagnostics, responsive sizing, and clearer status colors.'
+          new='V4.5.2 restores the desktop watcher proportions, polishes every extension popup state, keeps safe Amazon session continuation, and refreshes the website design.'
+          s=s.replace(old,new)
+          p.write_text(s)
+          PY
+
+      - name: Build 4.5.2 extension ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .release-452
+          mkdir -p .release-452
+          unzip -q updates/VTO_Watcher_4.5.0.zip -d .release-452
+
+          cp updates/4.5.2/popup_452.css .release-452/popup_452.css
+          cp updates/4.5.2/popup.html .release-452/popup.html
+          cp updates/4.5.2/manifest.json .release-452/manifest.json
+
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.release-452/vto_engine_450.js')
+          s=p.read_text()
+          if 'lastSessionKeepAliveAt' not in s:
+              old='let originalTitle=document.title, flashTimer=null, observerTimer=null;'
+              new='let originalTitle=document.title, flashTimer=null, observerTimer=null, lastSessionKeepAliveAt=0, lastLoginNoticeAt=0;'
+              if old not in s: raise SystemExit('engine state marker not found')
+              s=s.replace(old,new,1)
+
+              marker='  function isVtoContext(){ const t=bodyText(); return location.pathname.toLowerCase().includes("voluntary_time_off") || t.includes("voluntary time off") || t.includes("accepting voluntary time off") || t.includes("vto filled") || t.includes("vto accepted"); }\n'
+              insert=r'''  function sessionDialog(){
+    const explicit=[...document.querySelectorAll('[role="dialog"],[aria-modal="true"],dialog,[class*="modal" i],[class*="dialog" i]')].filter(visible);
+    const fallback=[...document.querySelectorAll("div,section")].filter(visible).filter(el=>{const t=norm(el.innerText||el.textContent||"");return t.length>0&&t.length<1200&&["are you still there","stay signed in","keep me signed in","session will expire","session is about to expire","session expired","session timeout","continue session"].some(x=>t.includes(x));});
+    const roots=[...new Set([...explicit,...fallback])];
+    const phrases=["are you still there","still there","stay signed in","keep me signed in","continue session","continue your session","session is about to expire","session will expire","extend session","keep working","remain signed in","stay logged in","keep me logged in","session timeout","session expired","your session has expired","your session is expiring"];
+    const authPhrases=["enter your password","enter password","verification code","one-time password","one time password","two-step verification","two factor","security code","authenticator code","sign in to continue"];
+    for(const root of roots){
+      const t=norm(root.innerText||root.textContent||"");
+      if(!phrases.some(p=>t.includes(p))) continue;
+      if(authPhrases.some(p=>t.includes(p))) return {root,button:null,requiresAuth:true,text:t};
+      const labels=["stay signed in","keep me signed in","continue session","continue","i'm still here","i’m still here","still here","keep working","extend session","yes, stay signed in","yes stay signed in","stay logged in","keep me logged in","continue working","ok","yes"];
+      const button=clickables(root).find(el=>{const x=textOf(el);return labels.some(k=>x===k||x.startsWith(k+" "));})||null;
+      return {root,button,requiresAuth:false,text:t};
+    }
+    return null;
+  }
+  async function handleSessionDialog(){
+    const d=sessionDialog(); if(!d) return false;
+    if(d.requiresAuth){refreshHoldUntil=Date.now()+60000;setStatus("Amazon sign-in required","error");if(Date.now()-lastLoginNoticeAt>60000){lastLoginNoticeAt=Date.now();log("SESSION AUTH REQUIRED","Amazon requires password/MFA; automatic refresh paused");notify("VTO Watcher","Amazon A to Z needs you to sign in again. Refreshing is paused.");}return true;}
+    if(!d.button){refreshHoldUntil=Date.now()+15000;setStatus("Session prompt detected","warning");log("SESSION PROMPT","Session dialog found but no safe continue button was recognized");return true;}
+    if(Date.now()-lastSessionKeepAliveAt<4000) return true;
+    lastSessionKeepAliveAt=Date.now();log("SESSION KEEPALIVE","button="+textOf(d.button));
+    try{d.button.setAttribute("data-vto-session-action","1");d.button.scrollIntoView({block:"center",behavior:"auto"});await sleep(100);d.button.click();await sleep(500);d.button.removeAttribute("data-vto-session-action");refreshHoldUntil=Date.now()+1200;nextRefreshAt=Date.now()+Math.max(5,Number(state.refreshSeconds||5))*1000;setStatus(state.armed?"Watching for VTO":"Session continued",state.armed?"armed":"off");log("SESSION CONTINUED","Amazon session continuation prompt dismissed");}
+    catch(e){stats.errors++;log("SESSION KEEPALIVE ERROR",e?.message||e);setStatus("Could not continue Amazon session","warning");}
+    return true;
+  }
+'''
+              if marker not in s: raise SystemExit('session insertion marker not found')
+              s=s.replace(marker,marker+insert,1)
+
+              oldscan='      stats.checks++; if(ui.last)ui.last.textContent=nowText(); renderStats();\n      if(isLogin()){setStatus("Login required","error");log("STOP","Amazon login required");notify("VTO Watcher","Amazon A to Z needs you to log in again.");return;}'
+              newscan='      stats.checks++; if(ui.last)ui.last.textContent=nowText(); renderStats();\n      if(await handleSessionDialog()) return;\n      if(isLogin()){refreshHoldUntil=Date.now()+60000;setStatus("Login required — refresh paused","error");if(Date.now()-lastLoginNoticeAt>60000){lastLoginNoticeAt=Date.now();log("STOP","Amazon login required; automatic refresh paused");notify("VTO Watcher","Amazon A to Z needs you to log in again. Refreshing is paused.");}return;}'
+              if oldscan not in s: raise SystemExit('scan login marker not found')
+              s=s.replace(oldscan,newscan,1)
+          p.write_text(s)
+          PY
+
+          rm -f .release-452/ui_451.css
+          node --check .release-452/vto_engine_450.js
+          node --check .release-452/popup.js
+          node --check .release-452/background_450.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=Path('.release-452')
+          m=json.loads((r/'manifest.json').read_text())
+          assert m['version']=='4.5.2'
+          assert m['content_scripts'][0]['css']==['content.css','content_450.css']
+          for f in ['popup_452.css','popup.html','vto_engine_450.js','background_450.js','license_guard.js']:
+              assert (r/f).exists(), f
+          PY
+          rm -f updates/VTO_Watcher_4.5.2.zip
+          (cd .release-452 && zip -qr ../updates/VTO_Watcher_4.5.2.zip .)
+          unzip -tq updates/VTO_Watcher_4.5.2.zip
+          SHA="$(sha256sum updates/VTO_Watcher_4.5.2.zip | awk '{print $1}')"
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.5.2",
+            "minimumVersion": "4.0.0",
+            "message": "V4.5.2 restores the desktop watcher proportions, polishes every extension popup state, keeps safe Amazon session continuation, and refreshes the website design.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.2.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.5.2.zip" > updates/VTO_Watcher_4.5.2.sha256
+          rm -rf .release-452
+
+      - name: Validate website assets
+        shell: bash
+        run: |
+          grep -q 'site_452.css' index.html
+          grep -q '4.5.2' app.js
+          test -s site_452.css
+
+      - name: Commit 4.5.2 website and release
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html app.js site_452.css updates/VTO_Watcher_4.5.2.zip updates/VTO_Watcher_4.5.2.sha256 updates/latest.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish VTO Watcher 4.5.2 and website polish"
+          git push
