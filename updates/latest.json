@@ -3,5 +3,5 @@
   "minimumVersion": "4.0.0",
   "message": "V4.5.0 replaces the patch stack with one unified watcher engine, improves diagnostics and refresh safety, and polishes the responsive GUI.",
   "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.5.0.zip",
-  "sha256": "99b35c8d95bacc46fa58f6dcff76218b1579dc1bd055182fc0e98629c8024ca6"
+  "sha256": "a544054df30309d7129d68ae8ab27f7c750c64df1a2568e61eec65c4ae032116"
 }
