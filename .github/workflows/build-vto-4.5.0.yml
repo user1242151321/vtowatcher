@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Final 4.5.0 package includes the hardened acceptance state machine.
       - name: Build clean 4.5.0 ZIP
         shell: bash
         run: |
@@ -111,5 +112,5 @@ jobs:
             echo "Release already up to date."
             exit 0
           fi
-          git commit -m "Publish final VTO Watcher 4.5.0 package"
+          git commit -m "Publish hardened VTO Watcher 4.5.0 package"
           git push
