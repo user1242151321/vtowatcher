@@ -1,0 +1,43 @@
+/* VTO Watcher 4.6.0 — health/status polish without changing desktop proportions */
+#vto-v4-panel .vto-health{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin:-2px 0 11px;
+}
+#vto-v4-panel .vto-health-chip{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  min-height:28px;
+  padding:6px 9px;
+  border:1px solid rgba(160,190,230,.075);
+  border-radius:12px;
+  color:#7288a3;
+  background:linear-gradient(180deg,rgba(20,39,65,.94),rgba(12,28,48,.96));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+  font-size:7.5px;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+#vto-v4-panel .vto-health-chip b{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#dce8f6;
+  font-size:8px;
+  font-weight:900;
+}
+#vto-v4-panel .vto-health-chip[data-state="good"] b{color:#68efbb}
+#vto-v4-panel .vto-health-chip[data-state="warn"] b{color:#f8b46a}
+#vto-v4-panel .vto-health-chip[data-state="bad"] b{color:#ff7c89}
+#vto-v4-panel .vto-health-chip[data-state="busy"] b{color:#9fc3ee}
+#vto-v4-panel .vto-status{transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}
+#vto-v4-panel .vto-status[data-state="found"]{animation:vto460Found 1.15s ease-in-out infinite alternate}
+#vto-v4-panel .vto-toggle.on,#vto-v4-panel .vto-main{transition:transform .14s ease,filter .14s ease,box-shadow .2s ease}
+#vto-v4-panel .vto-toggle.on:hover,#vto-v4-panel .vto-main:hover{box-shadow:0 14px 32px rgba(91,242,181,.18),inset 0 1px 0 rgba(255,255,255,.24)}
+@keyframes vto460Found{from{filter:brightness(1)}to{filter:brightness(1.08)}}
+@media (prefers-reduced-motion:reduce){#vto-v4-panel .vto-status[data-state="found"]{animation:none!important}}
