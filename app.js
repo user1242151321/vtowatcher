@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.6.2";
-const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.2.zip";
+const FALLBACK_VERSION = "4.6.3";
+const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.3.zip";
 const FALLBACK_SHA = "";
 
 const menuButton = document.getElementById("menuButton");
@@ -35,7 +35,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "V4.6.2 fixes the live VTO acceptance race by pausing refreshes during offer/confirmation flow and broadens safe VTO action recognition.";
+  if (copy) copy.textContent = "V4.6.3 fixes fresh VTO cards being misclassified as filled/old and keeps the live acceptance race fix.";
 }
 function setReleaseUI(version, downloadUrl, message, sha256, live = true) {
   const actualVersion = version || FALLBACK_VERSION;
