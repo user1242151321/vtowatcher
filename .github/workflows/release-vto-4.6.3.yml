@@ -1,0 +1,70 @@
+name: Release VTO Watcher 4.6.3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-vto-4.6.3.yml'
+      - 'updates/4.6.3/**'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release
+        run: |
+          set -euo pipefail
+          rm -rf .release-463
+          mkdir .release-463
+          unzip -q updates/VTO_Watcher_4.6.2.zip -d .release-463
+          python updates/4.6.3/patch_release_463.py
+          node --check .release-463/vto_engine_450.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=Path('.release-463')
+          m=json.loads((r/'manifest.json').read_text())
+          assert m['version']=='4.6.3'
+          s=(r/'vto_engine_450.js').read_text()
+          for x in ['timeRanges(text)','staleLabelInCard(card)','strongLiveAction(card)','CLASSIFY','pendingActionAt&&Date.now()-pendingActionAt<30000']:
+              assert x in s, x
+          PY
+          rm -f updates/VTO_Watcher_4.6.3.zip
+          (cd .release-463 && zip -qr ../updates/VTO_Watcher_4.6.3.zip .)
+          unzip -tq updates/VTO_Watcher_4.6.3.zip
+          SHA=$(sha256sum updates/VTO_Watcher_4.6.3.zip | awk '{print $1}')
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.6.3",
+            "minimumVersion": "4.0.0",
+            "message": "V4.6.3 fixes fresh VTO cards being misclassified as filled/old, keeps the 4.6.2 acceptance race fix, and adds card-classification diagnostics.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.3.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.6.3.zip" > updates/VTO_Watcher_4.6.3.sha256
+          rm -rf .release-463
+      - name: Update website version only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('app.js')
+          s=p.read_text().replace('const FALLBACK_VERSION = "4.6.2";','const FALLBACK_VERSION = "4.6.3";').replace('VTO_Watcher_4.6.2.zip','VTO_Watcher_4.6.3.zip')
+          s=s.replace('V4.6.2 fixes the live VTO acceptance race by pausing refreshes during offer/confirmation flow and broadens safe VTO action recognition.','V4.6.3 fixes fresh VTO cards being misclassified as filled/old and keeps the live acceptance race fix.')
+          p.write_text(s)
+          p=Path('index.html')
+          s=p.read_text().replace('v4.6.2','v4.6.3').replace('V4.6.2','V4.6.3').replace('Version 4.6.2','Version 4.6.3').replace('VTO_Watcher_4.6.2.zip','VTO_Watcher_4.6.3.zip')
+          p.write_text(s)
+          PY
+      - name: Commit release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/latest.json updates/VTO_Watcher_4.6.3.zip updates/VTO_Watcher_4.6.3.sha256 app.js index.html
+          git commit -m "Publish VTO Watcher 4.6.3"
+          git push
