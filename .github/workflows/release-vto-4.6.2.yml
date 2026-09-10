@@ -1,0 +1,67 @@
+name: Release VTO Watcher 4.6.2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-vto-4.6.2.yml'
+      - 'tools/release_patch_462.py'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release
+        run: |
+          set -euo pipefail
+          rm -rf .release-462
+          mkdir -p .release-462
+          unzip -q updates/VTO_Watcher_4.6.1.zip -d .release-462
+          python tools/release_patch_462.py
+          node --check .release-462/vto_engine_450.js
+          node --check .release-462/popup.js
+          python - <<'PY'
+          import json
+          m=json.load(open('.release-462/manifest.json'))
+          assert m['version']=='4.6.2'
+          assert m['content_scripts'][0]['js']==['license_guard.js','vto_engine_450.js']
+          assert m['content_scripts'][0]['css']==['content.css','content_450.css']
+          PY
+          rm -f updates/VTO_Watcher_4.6.2.zip
+          (cd .release-462 && zip -qr ../updates/VTO_Watcher_4.6.2.zip .)
+          unzip -tq updates/VTO_Watcher_4.6.2.zip
+          SHA="$(sha256sum updates/VTO_Watcher_4.6.2.zip | awk '{print $1}')"
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.6.2",
+            "minimumVersion": "4.0.0",
+            "message": "V4.6.2 fixes the live VTO acceptance race by pausing refreshes during offer/confirmation flow and broadens safe VTO action recognition.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.2.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.6.2.zip" > updates/VTO_Watcher_4.6.2.sha256
+          rm -rf .release-462
+      - name: Update website version text
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('app.js')
+          s=p.read_text().replace('const FALLBACK_VERSION = "4.6.1";','const FALLBACK_VERSION = "4.6.2";').replace('VTO_Watcher_4.6.1.zip','VTO_Watcher_4.6.2.zip').replace('V4.6.1 rollback hotfix restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.','V4.6.2 fixes the live VTO acceptance race by pausing refreshes during offer/confirmation flow and broadens safe VTO action recognition.')
+          p.write_text(s)
+          p=Path('index.html')
+          s=p.read_text().replace('v4.6.1','v4.6.2').replace('VTO_Watcher_4.6.1.zip','VTO_Watcher_4.6.2.zip').replace('Rollback hotfix: restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.','Acceptance hotfix: prevents refreshes from interrupting the live VTO flow and recognizes more safe offer/confirmation controls.')
+          p.write_text(s)
+          PY
+      - name: Commit release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/latest.json updates/VTO_Watcher_4.6.2.zip updates/VTO_Watcher_4.6.2.sha256 app.js index.html
+          git commit -m "Publish VTO Watcher 4.6.2"
+          git push
