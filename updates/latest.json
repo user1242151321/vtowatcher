@@ -1,7 +1,7 @@
 {
-  "latestVersion": "4.6.3",
+  "latestVersion": "4.6.4",
   "minimumVersion": "4.0.0",
-  "message": "V4.6.3 fixes fresh VTO cards being misclassified as filled/old, keeps the 4.6.2 acceptance race fix, and adds card-classification diagnostics.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.3.zip",
-  "sha256": "5a09647ce72166e22de50e8e967ea6f5c7141abe581329984f018c0ab12f168d"
+  "message": "V4.6.4 adds a dedicated Amazon session guard that continuously detects safe Stay logged in prompts while keeping the 4.6.3 VTO acceptance fixes.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.4.zip",
+  "sha256": "26d4ab10a0ea58703c485e18e01778d9482e14d7ee5d8b5722864f2d467ceb0d"
 }
