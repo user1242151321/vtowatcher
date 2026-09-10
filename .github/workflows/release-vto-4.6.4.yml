@@ -1,0 +1,70 @@
+name: Release VTO Watcher 4.6.4
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-vto-4.6.4.yml'
+      - 'updates/4.6.4/**'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release
+        run: |
+          set -euo pipefail
+          rm -rf .release-464
+          mkdir .release-464
+          unzip -q updates/VTO_Watcher_4.6.3.zip -d .release-464
+          cp updates/4.6.4/manifest.json .release-464/manifest.json
+          cp updates/4.6.4/session_guard_464.js .release-464/session_guard_464.js
+          node --check .release-464/session_guard_464.js
+          node --check .release-464/vto_engine_450.js
+          python - <<'PY'
+          import json
+          m=json.load(open('.release-464/manifest.json'))
+          assert m['version']=='4.6.4'
+          guards=[x for x in m['content_scripts'] if 'session_guard_464.js' in x.get('js',[])]
+          assert len(guards)==1 and guards[0].get('all_frames') is True
+          PY
+          rm -f updates/VTO_Watcher_4.6.4.zip
+          (cd .release-464 && zip -qr ../updates/VTO_Watcher_4.6.4.zip .)
+          unzip -tq updates/VTO_Watcher_4.6.4.zip
+          SHA="$(sha256sum updates/VTO_Watcher_4.6.4.zip | awk '{print $1}')"
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.6.4",
+            "minimumVersion": "4.0.0",
+            "message": "V4.6.4 adds a dedicated Amazon session guard that continuously detects safe Stay logged in prompts while keeping the 4.6.3 VTO acceptance fixes.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.4.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.6.4.zip" > updates/VTO_Watcher_4.6.4.sha256
+          rm -rf .release-464
+      - name: Update site version text
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for name in ['index.html','app.js']:
+              p=Path(name)
+              if not p.exists(): continue
+              s=p.read_text()
+              s=s.replace('4.6.3','4.6.4')
+              s=s.replace('VTO_Watcher_4.6.3.zip','VTO_Watcher_4.6.4.zip')
+              p.write_text(s)
+          PY
+      - name: Commit release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/latest.json updates/VTO_Watcher_4.6.4.zip updates/VTO_Watcher_4.6.4.sha256 index.html app.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish VTO Watcher 4.6.4"
+          git push
