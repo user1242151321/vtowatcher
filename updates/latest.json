@@ -1,7 +1,7 @@
 {
-  "latestVersion": "4.6.1",
+  "latestVersion": "4.6.2",
   "minimumVersion": "4.0.0",
-  "message": "V4.6.1 rollback hotfix restores the proven desktop watcher, extension popup, and website layout while keeping safe session continuation.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.1.zip",
-  "sha256": "72d979aac66ee08914fefb7b953e1d2a098a8e68dbbf0b376728745236085630"
+  "message": "V4.6.2 fixes the live VTO acceptance race by pausing refreshes during offer/confirmation flow and broadens safe VTO action recognition.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.2.zip",
+  "sha256": "a9784f5781ecdca59ebf1733fb57eeadfd855cb73ca33089f82ac6cb2842f6be"
 }
