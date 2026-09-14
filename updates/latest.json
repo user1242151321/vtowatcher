@@ -1,7 +1,7 @@
 {
-  "latestVersion": "4.6.5",
+  "latestVersion": "4.6.6",
   "minimumVersion": "4.0.0",
-  "message": "V4.6.5 hardens scoped session continuation, offer detection and acceptance verification; preserves desktop UI and the 5-second minimum refresh. Mocked DOM and Chromium tests passed. Amazon live verification remains necessary.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.5.zip",
-  "sha256": "8c60c80fc66acbf487a1022fe4d69dd1573ff5271b14afe417c8497ed0025715"
+  "message": "V4.6.6 fixes the side-menu refresh stall and restores menu → Schedule → VTO navigation, including reopening auto-closing menus. Acceptance/session safeguards, desktop UI and the 5-second minimum remain.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.6.zip",
+  "sha256": "04820bd6ef3f540db43e3285b445acad2dac731ca6adac960e78fc5941cb5fdd"
 }
