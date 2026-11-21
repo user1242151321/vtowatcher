@@ -1,0 +1,107 @@
+name: Release VTO Watcher 4.7.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-vto-4.7.0.yml'
+      - 'updates/4.7.0/**'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and validate 4.7.0
+        run: |
+          set -euo pipefail
+          rm -rf .release-470
+          mkdir -p .release-470
+          unzip -q updates/VTO_Watcher_4.6.6.zip -d .release-470
+
+          cp updates/4.7.0/manifest.json .release-470/manifest.json
+          cp updates/4.7.0/vto_engine_450.js .release-470/vto_engine_450.js
+          cp updates/4.7.0/popup.html .release-470/popup.html
+          cp updates/4.7.0/popup.js .release-470/popup.js
+          cp updates/4.7.0/popup_470.css .release-470/popup_470.css
+          cp updates/4.7.0/filters_470.js .release-470/filters_470.js
+
+          node --check .release-470/filters_470.js
+          node --check .release-470/vto_engine_450.js
+          node --check .release-470/popup.js
+          node --check .release-470/reliability_465.js
+          node --check .release-470/session_guard_464.js
+          node --check .release-470/background_450.js
+
+          mkdir -p .test/extension
+          cp .release-470/filters_470.js .test/extension/filters_470.js
+          cp updates/4.7.0/filter_470.test.js .test/filter_470.test.js
+          (cd .test && node filter_470.test.js)
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=Path('.release-470')
+          m=json.loads((r/'manifest.json').read_text())
+          assert m['version']=='4.7.0'
+          js=m['content_scripts'][0]['js']
+          assert 'filters_470.js' in js
+          assert js.index('filters_470.js') < js.index('vto_engine_450.js')
+          h=(r/'popup.html').read_text()
+          assert 'popup_470.css' in h
+          assert h.index('filters_470.js') < h.index('popup.js')
+          assert '\\n' not in h
+          for p in ['filters_470.js','popup_470.css','popup.js','popup.html','vto_engine_450.js','manifest.json']:
+              assert (r/p).exists() and (r/p).stat().st_size>0, p
+          PY
+
+          rm -rf .test
+          rm -f updates/VTO_Watcher_4.7.0.zip
+          (cd .release-470 && zip -qr ../updates/VTO_Watcher_4.7.0.zip .)
+          unzip -tq updates/VTO_Watcher_4.7.0.zip
+          SHA="$(sha256sum updates/VTO_Watcher_4.7.0.zip | awk '{print $1}')"
+          cat > updates/latest.json <<JSON
+          {
+            "latestVersion": "4.7.0",
+            "minimumVersion": "4.0.0",
+            "message": "V4.7.0 adds advanced VTO matching: date ranges, days of week, allowed hours, minimum/maximum length, priority windows, persistent settings, and a safe random 5–10 second check mode while keeping the 4.6.6 reliability/session safeguards.",
+            "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.7.0.zip",
+            "sha256": "$SHA"
+          }
+          JSON
+          echo "$SHA  VTO_Watcher_4.7.0.zip" > updates/VTO_Watcher_4.7.0.sha256
+          rm -rf .release-470
+
+      - name: Update website fallback and feature copy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('app.js')
+          s=p.read_text()
+          s=s.replace('const FALLBACK_VERSION = "4.6.6";','const FALLBACK_VERSION = "4.7.0";')
+          s=s.replace('VTO_Watcher_4.6.6.zip','VTO_Watcher_4.7.0.zip')
+          s=s.replace('V4.6.6 fixes fresh VTO cards being misclassified as filled/old and keeps the live acceptance race fix.','V4.7.0 adds date ranges, weekday filters, allowed hours, min/max VTO length, priority windows, and persistent matching settings.')
+          p.write_text(s)
+
+          p=Path('index.html')
+          s=p.read_text()
+          s=s.replace('v4.6.6','v4.7.0')
+          s=s.replace('V4.5</span>','V4.7</span>')
+          s=s.replace('VTO_Watcher_4.6.6.zip','VTO_Watcher_4.7.0.zip')
+          s=s.replace('Filter by minimum hours, start time, and longest-offer preference so the watcher focuses on what you want.','Filter by date ranges, days of week, allowed hours, minimum/maximum VTO length, priority windows, and longest-offer preference.')
+          p.write_text(s)
+          PY
+
+      - name: Commit validated release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js index.html updates/latest.json updates/VTO_Watcher_4.7.0.zip updates/VTO_Watcher_4.7.0.sha256
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish VTO Watcher 4.7.0"
+          git push
