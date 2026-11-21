@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VTO Watcher</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="popup_450.css">
+  <link rel="stylesheet" href="popup_452.css">
+  <link rel="stylesheet" href="popup_470.css">
+  <link rel="stylesheet" href="popup_471.css">
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-icon">V</div>
+        <div class="brand-version">v<span id="currentVersion"></span></div>
+        <div class="brand-text">
+          <div class="brand-title">VTO Watcher</div>
+          <div class="brand-sub">Licensed extension</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="message" class="status-bar" data-state="loading">Checking license…</div>
+
+    <div id="updateBox" class="panel update-panel hidden">
+      <div class="panel-title-row">
+        <div>
+          <div class="eyebrow">Release</div>
+          <div class="panel-title">Update center</div>
+        </div>
+        <div id="updateHeading" class="mini-badge">UPDATE AVAILABLE</div>
+      </div>
+      <div id="updateText" class="panel-copy"></div>
+      <button id="updateBtn" class="action-primary hidden">Download update</button>
+      <div id="noUpdateUrl" class="soft-note hidden">The GitHub update download is not available yet.</div>
+      <div class="steps-box">
+        <div class="steps-title">After downloading</div>
+        <div>Extract the ZIP → replace the extension files → Reload in chrome://extensions.</div>
+      </div>
+      <button id="copyStepsBtn" class="action-secondary compact">Copy update steps</button>
+    </div>
+
+    <div id="activateBox" class="panel auth-panel hidden">
+      <div class="eyebrow">Activation</div>
+      <div class="panel-title auth-title">Activate this device</div>
+      <div class="panel-copy">Enter your license key to unlock VTO Watcher on this browser.</div>
+      <label for="licenseKey">License key</label>
+      <input id="licenseKey" type="text" placeholder="VTO-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off">
+      <button id="activateBtn" class="action-primary">Activate</button>
+    </div>
+
+    <div id="activeBox" class="hidden">
+      <section class="license-details">
+        <div class="detail-cell"><span>License</span><strong id="licenseLabel">Active</strong></div>
+        <div class="detail-cell"><span>Access</span><strong id="versionAccess">Through V4</strong></div>
+        <div class="detail-cell"><span>Expires</span><strong id="expires">—</strong></div>
+        <div class="detail-cell"><span>Device</span><strong id="device">—</strong></div>
+      </section>
+
+
+      <section class="settings-panel">
+        <details>
+          <summary>VTO matching settings</summary>
+          <div class="settings-body">
+            <div class="setting-row">
+              <div><label for="refreshMode">Check pattern</label><select id="refreshMode"><option value="fixed">Fixed interval</option><option value="random">Random 5–10 sec</option></select></div>
+              <div><label for="refreshSeconds">Fixed interval</label><select id="refreshSeconds"><option value="5">5 sec</option><option value="10">10 sec</option><option value="15">15 sec</option><option value="20">20 sec</option><option value="30">30 sec</option><option value="60">60 sec</option></select></div>
+            </div>
+
+            <div class="setting-block"><div class="setting-title">Days of week</div><div class="day-grid">
+              <button type="button" class="day-btn" data-day="sun">Sun</button><button type="button" class="day-btn" data-day="mon">Mon</button><button type="button" class="day-btn" data-day="tue">Tue</button><button type="button" class="day-btn" data-day="wed">Wed</button><button type="button" class="day-btn" data-day="thu">Thu</button><button type="button" class="day-btn" data-day="fri">Fri</button><button type="button" class="day-btn" data-day="sat">Sat</button>
+            </div></div>
+
+            <div class="setting-block">
+              <div class="switch-row"><div class="setting-title">Date ranges</div><input id="dateFilterEnabled" type="checkbox"></div>
+              <div class="range-row"><span>1</span><input id="dateStart1" type="date"><input id="dateEnd1" type="date"></div>
+              <div class="range-row"><span>2</span><input id="dateStart2" type="date"><input id="dateEnd2" type="date"></div>
+              <div class="range-row"><span>3</span><input id="dateStart3" type="date"><input id="dateEnd3" type="date"></div>
+            </div>
+
+            <div class="setting-block">
+              <div class="switch-row"><div class="setting-title">Allowed hours</div><input id="allowedHoursEnabled" type="checkbox"></div>
+              <div class="setting-row"><div><label for="allowedStart">Start</label><input id="allowedStart" type="time"></div><div><label for="allowedEnd">End</label><input id="allowedEnd" type="time"></div></div>
+            </div>
+
+            <div class="setting-row">
+              <div><label for="minHours">Minimum VTO hours</label><input id="minHours" type="number" min="0" max="24" step=".25"></div>
+              <div><label for="maxHours">Maximum VTO hours</label><input id="maxHours" type="number" min="0" max="24" step=".25"></div>
+            </div>
+
+            <div class="setting-block"><div class="setting-title">Priority windows</div>
+              <div class="priority-row"><span>P1</span><input id="priorityEnabled1" type="checkbox"><input id="priorityStart1" type="time"><input id="priorityEnd1" type="time"></div>
+              <div class="priority-row"><span>P2</span><input id="priorityEnabled2" type="checkbox"><input id="priorityStart2" type="time"><input id="priorityEnd2" type="time"></div>
+              <div class="priority-row"><span>P3</span><input id="priorityEnabled3" type="checkbox"><input id="priorityStart3" type="time"><input id="priorityEnd3" type="time"></div>
+            </div>
+
+            <div class="switch-row setting-block"><div><div class="setting-title">Prefer longest</div><div class="settings-note">Within the same priority tier, grab the longest matching VTO first.</div></div><input id="preferLongest" type="checkbox"></div>
+            <div id="settingsStatus" class="settings-note">Settings save automatically.</div>
+          </div>
+        </details>
+      </section>
+
+      <div class="action-dock">
+        <button id="openBtn" class="action-primary">Open A to Z</button>
+        <button id="deactivateBtn" class="action-secondary">Deactivate</button>
+      </div>
+    </div>
+
+    <div class="footer-note">Updates are served through GitHub. Licensing is validated through Cloudflare.</div>
+  </div>
+  <script src="filters_470.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
