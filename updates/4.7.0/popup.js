@@ -4,7 +4,8 @@ const updateBox=$("updateBox"), updateHeading=$("updateHeading"), updateText=$("
 let currentUpdateUrl=null;
 currentVersionEl.textContent=chrome.runtime.getManifest().version;
 
-const UPDATE_STEPS=["VTO Watcher manual update:","1. Download the update ZIP.","2. Extract it.","3. Replace the files in your VTO extension folder.","4. Open chrome://extensions.","5. Press Reload on VTO Watcher.","6. Open the extension and confirm the new version is shown."].join("\n");
+const UPDATE_STEPS=["VTO Watcher manual update:","1. Download the update ZIP.","2. Extract it.","3. Replace the files in your VTO extension folder.","4. Open chrome://extensions.","5. Press Reload on VTO Watcher.","6. Open the extension and confirm the new version is shown."].join("
+");
 
 function setMessage(text,state="loading"){
   messageEl.textContent=text;
@@ -36,7 +37,8 @@ openBtn?.addEventListener("click",()=>chrome.tabs.create({url:"https://atoz.amaz
 updateBtn?.addEventListener("click",()=>{if(currentUpdateUrl)chrome.tabs.create({url:currentUpdateUrl});});
 copyStepsBtn?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(UPDATE_STEPS);copyStepsBtn.textContent="Copied";setTimeout(()=>copyStepsBtn.textContent="Copy update steps",1500);}catch{copyStepsBtn.textContent="Could not copy";}});
 refreshStatus(true);
-\n
+
+
 
 const FILTER_DEFAULTS = window.VTOFilters?.DEFAULTS || {};
 const dayButtons=[...document.querySelectorAll('.day-btn')];
