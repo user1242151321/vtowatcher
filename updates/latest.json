@@ -1,7 +1,7 @@
 {
-  "latestVersion": "4.6.6",
+  "latestVersion": "4.7.0",
   "minimumVersion": "4.0.0",
-  "message": "V4.6.6 fixes the side-menu refresh stall and restores menu → Schedule → VTO navigation, including reopening auto-closing menus. Acceptance/session safeguards, desktop UI and the 5-second minimum remain.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.6.6.zip",
-  "sha256": "04820bd6ef3f540db43e3285b445acad2dac731ca6adac960e78fc5941cb5fdd"
+  "message": "V4.7.0 adds advanced VTO matching: date ranges, days of week, allowed hours, minimum/maximum length, priority windows, persistent settings, and a safe random 5–10 second check mode while keeping the 4.6.6 reliability/session safeguards.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.7.0.zip",
+  "sha256": "23d98f84678ac19bb84739e182e5037a22ee790268559561e4507df1daaf9240"
 }
