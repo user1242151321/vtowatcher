@@ -1,7 +1,7 @@
 {
-  "latestVersion": "4.7.0",
+  "latestVersion": "4.7.2",
   "minimumVersion": "4.0.0",
-  "message": "V4.7.0 adds advanced VTO matching: date ranges, days of week, allowed hours, minimum/maximum length, priority windows, persistent settings, and a safe random 5–10 second check mode while keeping the 4.6.6 reliability/session safeguards.",
-  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.7.0.zip",
-  "sha256": "23d98f84678ac19bb84739e182e5037a22ee790268559561e4507df1daaf9240"
+  "message": "V4.7.2 keeps all V4.7.0 matching, acceptance, session and reliability features while making the extension popup and floating watcher fully rectangular with square 0px corners.",
+  "downloadUrl": "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.7.2.zip",
+  "sha256": "b92f0e80b36514970d6bf61138c3b2de249ecc11d785b47e535b134c0f52ac8c"
 }

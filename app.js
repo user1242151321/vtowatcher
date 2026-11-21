@@ -1,6 +1,6 @@
 const RELEASE_FEED = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/latest.json";
-const FALLBACK_VERSION = "4.7.0";
-const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.7.0.zip";
+const FALLBACK_VERSION = "4.7.2";
+const FALLBACK_DOWNLOAD = "https://raw.githubusercontent.com/user1242151321/vtowatcher/main/updates/VTO_Watcher_4.7.2.zip";
 const FALLBACK_SHA = "";
 
 const menuButton = document.getElementById("menuButton");
@@ -35,7 +35,7 @@ function updateChangelog(version) {
   const copy = first.querySelector("p");
   if (title) title.textContent = `Version ${version || FALLBACK_VERSION}`;
   if (label) label.textContent = "Current";
-  if (copy) copy.textContent = "V4.7.0 adds date ranges, weekday filters, allowed hours, min/max VTO length, priority windows, and persistent matching settings.";
+  if (copy) copy.textContent = "V4.7.2 keeps the advanced VTO matching and reliability features while switching the popup and floating watcher to fully square rectangular corners.";
 }
 function setReleaseUI(version, downloadUrl, message, sha256, live = true) {
   const actualVersion = version || FALLBACK_VERSION;
