@@ -1,0 +1,14 @@
+/* VTO Watcher 4.7.1 — rectangular UI override */
+.shell{border-radius:0!important}
+.brand-icon{border-radius:0!important}
+.brand-version,.mini-badge{border-radius:0!important}
+.status-bar{border-radius:0!important}
+.panel{border-radius:0!important}
+input{border-radius:0!important}
+.detail-cell{border-radius:0!important}
+.action-dock{border-radius:0!important}
+.action-primary,.action-secondary,.compact{border-radius:0!important}
+.steps-box,.soft-note{border-radius:0!important}
+.settings-panel details{border-radius:0!important}
+.settings-panel input,.settings-panel select{border-radius:0!important}
+.day-btn{border-radius:0!important}
