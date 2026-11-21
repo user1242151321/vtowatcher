@@ -1,0 +1,16 @@
+/* VTO Watcher 4.7.1 — rectangular watcher override */
+#vto-v4-panel{border-radius:0!important}
+#vto-v4-panel.vto-minimized{border-radius:0!important}
+#vto-v4-panel .vto-v4-title::before{border-radius:0!important}
+#vto-v4-panel .vto-v4-badge{border-radius:0!important}
+#vto-v4-panel .vto-icon-btn{border-radius:0!important}
+#vto-v4-panel .vto-status{border-radius:0!important}
+#vto-v4-panel .vto-card{border-radius:0!important}
+#vto-v4-panel .vto-select,
+#vto-v4-panel .vto-number{border-radius:0!important}
+#vto-v4-panel .vto-toggle,
+#vto-v4-panel .vto-secondary{border-radius:0!important}
+#vto-v4-panel .vto-main{border-radius:0!important}
+#vto-v4-panel .vto-offer-box{border-radius:0!important}
+#vto-v4-panel .vto-log{border-radius:0!important}
+@media(max-width:520px){#vto-v4-panel{border-radius:0!important}}
