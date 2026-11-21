@@ -56,10 +56,10 @@
     if(a==null||b==null||start==null)return true;
     const end=(start+Math.round(Number(duration||0)*60))%1440;
     if(a<=b) return start>=a && end<=b && start<=end;
-    // Overnight window: treat times after start OR before end as one continuous span.
-    const sAdj=start<a?start+1440:start;
-    const eRaw=start+Math.round(Number(duration||0)*60);
-    const eAdj=eRaw<a?eRaw+1440:eRaw;
+    // Overnight window is a continuous interval from a through b on the next day.
+    const dur=Math.round(Number(duration||0)*60);
+    let sAdj=start, eAdj=start+dur;
+    if(sAdj<a){sAdj+=1440;eAdj+=1440;}
     return sAdj>=a && eAdj<=b+1440;
   }
   function dateAllowed(meta,state){
