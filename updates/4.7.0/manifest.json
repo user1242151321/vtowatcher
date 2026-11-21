@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "VTO Watcher",
+  "version": "4.7.0",
+  "description": "VTO Watcher v4.7.0 adds advanced VTO matching filters inspired by public AtoZ Shift Helper features: dates, weekdays, allowed hours, min/max length, priority windows, persistent settings, safe random refresh, transactional acceptance, session protection, GitHub updates, and Cloudflare licensing.",
+  "permissions": [
+    "notifications",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://atoz.amazon.work/*",
+    "https://vto-license-server.vto-license-ks.workers.dev/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background_450.js"
+  },
+  "action": {
+    "default_title": "VTO Watcher",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://atoz.amazon.work/*"
+      ],
+      "js": [
+        "reliability_465.js",
+        "session_guard_464.js",
+        "license_guard.js",
+        "filters_470.js",
+        "vto_engine_450.js"
+      ],
+      "css": [
+        "content.css",
+        "content_450.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://atoz.amazon.work/*"
+      ],
+      "js": [
+        "reliability_465.js",
+        "session_guard_464.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
