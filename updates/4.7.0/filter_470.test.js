@@ -48,7 +48,7 @@ st={...base,priorityWindows:[
 ]};
 const p2=offer('Monday, November 23, 2026 9:00am - 5:00pm',540,8);
 const p1=offer('Monday, November 23, 2026 11:00pm - 7:00am',1380,8);
-assert.strictEqual(F.filterOffers([p2,p1],st)[0],p1);
+assert.equal(F.filterOffers([p2,p1],st)[0].raw,p1.raw);
 
 // Preflight validation.
 assert(F.validate({...base,allowedDays:{sun:false,mon:false,tue:false,wed:false,thu:false,fri:false,sat:false}}).length>0);
