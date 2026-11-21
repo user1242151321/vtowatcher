@@ -4,8 +4,7 @@ const updateBox=$("updateBox"), updateHeading=$("updateHeading"), updateText=$("
 let currentUpdateUrl=null;
 currentVersionEl.textContent=chrome.runtime.getManifest().version;
 
-const UPDATE_STEPS=["VTO Watcher manual update:","1. Download the update ZIP.","2. Extract it.","3. Replace the files in your VTO extension folder.","4. Open chrome://extensions.","5. Press Reload on VTO Watcher.","6. Open the extension and confirm the new version is shown."].join("
-");
+const UPDATE_STEPS=["VTO Watcher manual update:","1. Download the update ZIP.","2. Extract it.","3. Replace the files in your VTO extension folder.","4. Open chrome://extensions.","5. Press Reload on VTO Watcher.","6. Open the extension and confirm the new version is shown."].join("\\n");
 
 function setMessage(text,state="loading"){
   messageEl.textContent=text;
