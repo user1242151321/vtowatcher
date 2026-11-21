@@ -1,0 +1,24 @@
+/* VTO Watcher 4.7.0 settings */
+.settings-panel{margin-top:14px!important}
+.settings-panel details{border:1px solid var(--x-line);border-radius:18px;background:linear-gradient(180deg,#102744,#0b1d33);overflow:hidden}
+.settings-panel summary{cursor:pointer;list-style:none;padding:13px 14px;color:var(--x-text);font-size:12px;font-weight:900}
+.settings-panel summary::-webkit-details-marker{display:none}
+.settings-panel summary::after{content:'+';float:right;color:var(--x-mint);font-size:16px}
+.settings-panel details[open] summary::after{content:'–'}
+.settings-body{padding:0 14px 14px}
+.setting-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.setting-row.three{grid-template-columns:repeat(3,1fr)}
+.setting-block{margin-top:12px}
+.setting-block>label,.setting-title{display:block;margin-bottom:7px;color:var(--x-muted)!important;font-size:9px!important;font-weight:850!important;letter-spacing:.08em;text-transform:uppercase}
+.settings-panel input,.settings-panel select{width:100%;min-height:40px!important;border-radius:13px!important;padding:9px 10px!important}
+.day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.day-btn{min-height:34px;border:1px solid var(--x-line);border-radius:10px;background:#102641;color:#8ea7c4;font-size:8px;font-weight:900;cursor:pointer}
+.day-btn.on{background:linear-gradient(180deg,#69f5bf,#2bdc99);color:#032016;border-color:transparent}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.switch-row input{width:18px!important;min-height:18px!important}
+.range-row,.priority-row{display:grid;grid-template-columns:34px 1fr 1fr;gap:6px;align-items:center;margin-top:6px}
+.range-row span,.priority-row span{font-size:9px;color:var(--x-muted);font-weight:900}
+.priority-row{grid-template-columns:34px 18px 1fr 1fr}
+.settings-note{margin-top:9px;color:var(--x-soft);font-size:9px;line-height:1.45}
+body{overflow:auto!important;max-height:650px!important}
+.shell{min-height:488px!important}
